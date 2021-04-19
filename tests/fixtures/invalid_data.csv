@@ -1,4 +1,5 @@
-reporting_jurisdiction,county_names
+reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served
 California,"San Franscisco, Los Angeles"
 CA,123
 CA,"{'foo': 'bar"}"
+CA,,,90745,3500000

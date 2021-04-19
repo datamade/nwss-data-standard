@@ -1,4 +1,4 @@
-reporting_jurisdiction,county_names
-CA,"San Franscisco, Los Angeles"
-CA,
-CA,Los Angeles
+reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time
+CA,"San Franscisco, Los Angeles",,90745,3500000,9.9
+CA,,San Bernardino,92405,25000,
+CA,Los Angeles,,90745,3500000,1.3
