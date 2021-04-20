@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, \
-    validate, ValidationError, validates_schema, validates
+    validate, ValidationError, validates_schema
 from marshmallow.decorators import pre_load
 
 from nwss import value_sets, fields as nwss_fields
@@ -27,8 +27,8 @@ class WaterSampleSchema(Schema):
         Either county_names or other_jurisdiction must have a non-empty value.
         """
         if not data['county_names'] and not data['other_jurisdiction']:
-            raise ValidationError('Either county_names or other_jurisdiction' \
-                                   'must have a value.')
+            raise ValidationError('Either county_names or other_jurisdiction'
+                                  'must have a value.')
 
     zipcode = fields.String(
         required=True,
@@ -59,8 +59,8 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_sample_location(self, data, **kwargs):
         if data['sample_location'] == 'upstream' \
-            and not data.get('sample_location_specify', None):
-            raise ValidationError('An "upstream" sample_location must have' \
+          and not data.get('sample_location_specify', None):
+            raise ValidationError('An "upstream" sample_location must have'
                                   'a value for sample_location_specify.')
 
     institution_type = fields.String(
@@ -70,5 +70,5 @@ class WaterSampleSchema(Schema):
 
     epaid = fields.String(
         allow_none=True
-        #validate=validate.Regexp() #TODO -- <2-letter abbreviation><#######>
+        # validate=validate.Regexp() #TODO -- <2-letter abbreviation><#######>
     )
