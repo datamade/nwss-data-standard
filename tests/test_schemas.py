@@ -43,7 +43,7 @@ def test_reporting_jurisdictions_invalid(schema, valid_data):
         schema.load(data)
 
 
-def test_valid_county_jurisdiction(schema, valid_data):
+def test_county_jurisdiction_valid(schema, valid_data):
     valid_input = [
         {'county_names': 'Los Angeles', 'other_jurisdiction': ''},
         {'county_names': 'Los Angeles, San Diego', 'other_jurisdiction': ''},
@@ -55,7 +55,7 @@ def test_valid_county_jurisdiction(schema, valid_data):
     schema.load(data)
 
 
-def test_invalid_county_jurisdiction(schema, valid_data):
+def test_county_jurisdiction_invalid(schema, valid_data):
     invalid_input = [
         {'county_names': '', 'other_jurisdiction': ''},
         {'county_names': '', 'other_jurisdiction': ''},
@@ -136,7 +136,7 @@ def test_institution_type_invalid(schema, valid_data):
         schema.load(data)
 
 
-def test_valid_epaid(schema, valid_data):
+def test_epaid_valid(schema, valid_data):
     epaids = [
         {'epaid': 'ca2343454'},
         {'epaid': 'AL0042234'},
@@ -148,14 +148,13 @@ def test_valid_epaid(schema, valid_data):
     schema.load(data)
 
 
-def test_invalid_epaid(schema, valid_data):
+def test_epaid_invalid(schema, valid_data):
     invalid_epaids = [
         {'epaid': 'CA1123'},
         {'epaid': 'CAA112323'},
         {'epaid': '0042234AL'}
     ]
 
-    # add some invalid entries to the valid data
     data = data_updater(invalid_epaids, valid_data)
 
     with pytest.raises(ValidationError):
