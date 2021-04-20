@@ -72,3 +72,13 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         validate=validate.Regexp('^([a-zA-Z]{2})(\\d{7})$')
     )
+
+    wwtp_name = fields.String(
+        required=True,
+        validate=validate.Length(max=40)
+    )
+
+    wwtp_jurisdiction = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.wwtp_jurisdictions)
+    )
