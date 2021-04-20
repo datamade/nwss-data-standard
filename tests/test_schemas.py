@@ -93,7 +93,7 @@ def test_sample_location_invalid(schema, valid_data):
     invalid = [
         {
             'sample_location': 'upstream',
-            'sample_location_specify': ''  # must not be empty
+            'sample_location_specify': ''
         },
         {
             'sample_location': 'invalid location',
