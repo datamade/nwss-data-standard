@@ -146,3 +146,9 @@ wwtp_jurisdictions = [
     'WI',
     'WY',
 ]
+
+yes_no_empty = [
+    'yes',
+    'no',
+    None
+]

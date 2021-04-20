@@ -94,3 +94,13 @@ class WaterSampleSchema(Schema):
         validate=validate.Range(min=0, max=100),
         metadata={'Units': 'Percent'}
     )
+
+    stormwater_input = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )
+
+    influent_equilibrated = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )

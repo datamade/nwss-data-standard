@@ -1,4 +1,4 @@
-reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time,sample_location,sample_location_specify,institution_type,epaid,wwtp_name,wwtp_jurisdiction,capacity_mgd,industrial_input
+reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time,sample_location,sample_location_specify,institution_type,epaid,wwtp_name,wwtp_jurisdiction,capacity_mgd,industrial_input,stormwater_input,influent_equilibrated
 California,"San Franscisco, Los Angeles",
 CA,123
 CA,"{'foo': 'bar"}"

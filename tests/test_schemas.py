@@ -184,3 +184,27 @@ def test_wwtp_jurisdictions_invalid(schema, valid_data):
 
     with pytest.raises(ValidationError):
         schema.load(data)
+
+def test_stormwater_input_valid(schema, valid_data):
+    valid_input = [
+        {'stormwater_input': 'yes'},
+        {'stormwater_input': 'no'},
+        {'stormwater_input': ''}
+    ]
+
+    data = data_updater(valid_input, valid_data)
+
+    schema.load(data)
+
+
+def test_stormwater_input_invalid(schema, valid_data):
+    valid_input = [
+        {'stormwater_input': 'y'},
+        {'stormwater_input': 'n'},
+        {'stormwater_input': 'n/a'}
+    ]
+
+    data = data_updater(valid_input, valid_data)
+
+    with pytest.raises(ValidationError):
+        schema.load(data)
