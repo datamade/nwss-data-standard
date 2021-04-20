@@ -16,8 +16,8 @@ class WaterSampleSchema(Schema):
         validate=validate.OneOf(value_sets.reporting_jurisdiction)
     )
 
-    county_names = nwss_fields.ListString(missing='')
-    other_jurisdiction = nwss_fields.ListString(missing='')
+    county_names = nwss_fields.ListString(missing=None)
+    other_jurisdiction = nwss_fields.ListString(missing=None)
 
     @validates_schema
     def validate_county_jurisdiction(self, data, **kwargs):
