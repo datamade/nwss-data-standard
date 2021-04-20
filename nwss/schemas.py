@@ -8,8 +8,8 @@ from nwss import value_sets, fields as nwss_fields
 class WaterSampleSchema(Schema):
     @pre_load
     def cast_to_none(self, raw_data, **kwargs):
-        """Casts empty strings to None, since Python's csv library loads null
-        values as empty strings and the schema needs to process empty strings.
+        """Cast empty strings to null to provide for the use of 
+        the allow_none flag by optional numeric fields.
         """
         return {k: v if v != '' else None for k, v in raw_data.items()}
 
