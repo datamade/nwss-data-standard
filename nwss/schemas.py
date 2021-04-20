@@ -8,7 +8,7 @@ from nwss import value_sets, fields as nwss_fields
 class WaterSampleSchema(Schema):
     @pre_load
     def cast_to_none(self, raw_data, **kwargs):
-        """Cast empty strings to None to provide for the use of 
+        """Cast empty strings to None to provide for the use of
         the allow_none flag by optional numeric fields.
         """
         return {k: v if v != '' else None for k, v in raw_data.items()}
@@ -70,5 +70,5 @@ class WaterSampleSchema(Schema):
 
     epaid = fields.String(
         allow_none=True,
-        validate=validate.Regexp('^([a-zA-Z]{2})(\d{7})$') #TODO -- <2-letter abbreviation><#######>
+        validate=validate.Regexp('^([a-zA-Z]{2})(\\d{7})$')
     )
