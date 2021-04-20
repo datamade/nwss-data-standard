@@ -1,6 +1,8 @@
-from marshmallow import Schema, fields, validate, ValidationError, validates_schema
+from marshmallow import Schema, fields, \
+    validate, ValidationError, validates_schema
 
 from nwss import value_sets, fields as nwss_fields
+
 
 class FloatField(fields.Float):
     """Workaround for when a float is missing."""
@@ -15,6 +17,7 @@ class FloatField(fields.Float):
         else:
             return super()._deserialize(value, attr, data, **kwargs)
 
+
 class WaterSampleSchema(Schema):
     reporting_jurisdiction = fields.String(
         required=True,
@@ -27,11 +30,12 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_county_jurisdiction(self, data, **kwargs):
         """
-        The data dictionary says, "either county_names or other_jurisdiction 
+        The data dictionary says, "either county_names or other_jurisdiction
         must have a non-empty value."
         """
         if not data['county_names'] and not data['other_jurisdiction']:
-            raise ValidationError('Either county_names or other_jurisdiction must have a value.')
+            raise ValidationError('Either county_names or other_jurisdiction \
+                                   must have a value.')
 
     zipcode = fields.String(
         required=True,
