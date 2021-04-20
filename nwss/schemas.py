@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields, \
     validate, ValidationError, validates_schema
+from marshmallow.decorators import pre_load
 
 from nwss import value_sets, fields as nwss_fields
 
@@ -19,6 +20,13 @@ class FloatField(fields.Float):
 
 
 class WaterSampleSchema(Schema):
+    @pre_load
+    def cast_to_none(self, raw_data, **kwargs):
+        """Casts empty strings to None, since Python's csv library loads null
+        values as empty strings and the schema needs to process empty strings.
+        """
+        return {k: v if v != '' else None for k, v in raw_data.items()}
+
     reporting_jurisdiction = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.reporting_jurisdiction)
@@ -47,8 +55,9 @@ class WaterSampleSchema(Schema):
         validate=validate.Range(min=0)
     )
 
-    sewage_travel_time = FloatField(
-        metadata={'Unit': 'Time in hours.'}
+    sewage_travel_time = fields.Float(
+        validate=validate.Range(min=0),
+        allow_none=True
     )
 
     sample_location_specify = fields.Str(
