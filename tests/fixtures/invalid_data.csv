@@ -1,5 +1,9 @@
-reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served
+reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time,sample_location,epaid
 California,"San Franscisco, Los Angeles"
 CA,123
 CA,"{'foo': 'bar"}"
 CA,,,90745,3500000
+CA,Los Angeles,,90745,3500000,1.3,invalid_sample_loc
+CA,Los Angeles,,90745,3500000,1.3,upstream,
+CA,Los Angeles,,90745,3500000,1.3,upstream,sample_loc_b,
+CA,Los Angeles,,90745,3500000,1.3,upstream,sample_loc_b,invalid_institution

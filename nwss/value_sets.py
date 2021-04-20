@@ -64,3 +64,26 @@ reporting_jurisdiction = [
     'WI',
     'WY',
 ]
+
+sample_location = [
+    'wwtp',
+    'upstream'
+]
+
+institution_type = [
+    'not institution specific',
+    'correctional',
+    'long term care - nursing home',
+    'long term care - assisted living',
+    'other long term care',
+    'short stay acute care hospital',
+    'long term acute care hospital',
+    'child day care',
+    'k12',
+    'higher ed dorm',
+    'higher ed other',
+    'social services shelter',
+    'other residential building',
+    'ship',
+    'airplane'
+]
