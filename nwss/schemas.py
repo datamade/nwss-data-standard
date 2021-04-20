@@ -5,20 +5,6 @@ from marshmallow.decorators import pre_load
 from nwss import value_sets, fields as nwss_fields
 
 
-class FloatField(fields.Float):
-    """Workaround for when a float is missing."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def _deserialize(self, value, attr, data, **kwargs):
-        print('kwargs')
-        print(kwargs)
-        if value == '':
-            return value
-        else:
-            return super()._deserialize(value, attr, data, **kwargs)
-
-
 class WaterSampleSchema(Schema):
     @pre_load
     def cast_to_none(self, raw_data, **kwargs):
