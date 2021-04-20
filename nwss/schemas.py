@@ -4,7 +4,12 @@ from nwss import value_sets, fields as nwss_fields
 
 class FloatField(fields.Float):
     """Workaround for when a float is missing."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def _deserialize(self, value, attr, data, **kwargs):
+        print('kwargs')
+        print(kwargs)
         if value == '':
             return value
         else:
@@ -38,24 +43,9 @@ class WaterSampleSchema(Schema):
         validate=validate.Range(min=0)
     )
 
-    # TODO Q:
-    # doc has "Hours" in the Units column. 
-    # how does that translate here?
-    #
-    # also, the doc says that this can be "empty", but the schema won't validate in this case.
-    # test return: marshmallow.exceptions.ValidationError: {1: {'sewage_travel_time': ['Not a valid number.']}}
-    # because of line 3 in tests/fixtures/valid_data.csv.
-    # https://marshmallow.readthedocs.io/en/latest/marshmallow.fields.html#marshmallow.fields.Float
-    # is this when we'd want to use a custom field?
-    # this "empty" idea looks to be pattern throughout this doc
-    # sewage_travel_time = fields.Float(
-    #     allow_none=True,
-    #     required=False,
-    #     missing=''
-        
-    # )
-
-    sewage_travel_time = FloatField()
+    sewage_travel_time = FloatField(
+        metadata={'Unit': 'Time in hours.'}
+    )
 
     sample_location_specify = fields.Str(
         validate=validate.Range(min=0, max=40)
