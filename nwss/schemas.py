@@ -2,6 +2,13 @@ from marshmallow import Schema, fields, validate, ValidationError, validates_sch
 
 from nwss import value_sets, fields as nwss_fields
 
+class FloatField(fields.Float):
+    """Workaround for when a float is missing."""
+    def _deserialize(self, value, attr, data, **kwargs):
+        if value == '':
+            return value
+        else:
+            return super()._deserialize(value, attr, data, **kwargs)
 
 class WaterSampleSchema(Schema):
     reporting_jurisdiction = fields.String(
@@ -41,7 +48,14 @@ class WaterSampleSchema(Schema):
     # https://marshmallow.readthedocs.io/en/latest/marshmallow.fields.html#marshmallow.fields.Float
     # is this when we'd want to use a custom field?
     # this "empty" idea looks to be pattern throughout this doc
-    sewage_travel_time = fields.Float(validate=validate.Range(min=0))
+    # sewage_travel_time = fields.Float(
+    #     allow_none=True,
+    #     required=False,
+    #     missing=''
+        
+    # )
+
+    sewage_travel_time = FloatField()
 
     sample_location_specify = fields.Str(
         validate=validate.Range(min=0, max=40)
