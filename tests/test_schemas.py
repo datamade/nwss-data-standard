@@ -173,7 +173,7 @@ def test_wwtp_jurisdictions_valid(schema, valid_data):
     schema.load(data)
 
 
-def test_wwtp_jurisdictions_valid(schema, valid_data):
+def test_wwtp_jurisdictions_invalid(schema, valid_data):
     invalid_juris = [
         {'wwtp_jurisdiction': 'ALL'},
         {'wwtp_jurisdiction': 'ILL'},

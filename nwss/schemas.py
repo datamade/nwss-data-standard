@@ -82,3 +82,15 @@ class WaterSampleSchema(Schema):
         required=True,
         validate=validate.OneOf(value_sets.wwtp_jurisdictions)
     )
+
+    capacity_mgd = fields.Float(
+        required=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Million gallons per day (MGD)'}
+    )
+
+    industrial_input = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0, max=100),
+        metadata={'Units': 'Percent'}
+    )
