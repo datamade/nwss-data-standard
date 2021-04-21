@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from marshmallow import ValidationError
 import pytest
 
@@ -17,42 +18,45 @@ def data_updater(fields_to_update, rows):
         row.update(**new_value)
     return rows
 
+@contextmanager
+def does_not_raise():
+    yield
 
-def test_reporting_jurisdictions_valid(schema, valid_data):
-    valid = [
-        {'reporting_jurisdiction': 'CA'},
-        {'reporting_jurisdiction': 'IL'},
-        {'reporting_jurisdiction': 'AL'},
+def update_data(input, valid_data):
+    data = valid_data.pop(0)
+    data.update(**input)
+    valid_data.append(data)
+    return valid_data
+
+
+@pytest.mark.parametrize(
+    'test_input,expectation', 
+    [
+        ({'reporting_jurisdiction': 'CA'}, does_not_raise()),
+        ({'reporting_jurisdiction': 'IL'}, does_not_raise()),
+        ({'reporting_jurisdiction': 'AL'}, does_not_raise()),
+        ({'reporting_jurisdiction': 'CAA'}, pytest.raises(ValidationError)),
+        ({'reporting_jurisdiction': 'I'}, pytest.raises(ValidationError)),
+        ({'reporting_jurisdiction': 'AA'}, pytest.raises(ValidationError))
+    ])
+def test_reporting_jurisdictions(schema, valid_data, test_input, expectation):
+    data = update_data(test_input, valid_data)
+    with expectation:
+        schema.load(list(data))
+
+@pytest.mark.parametrize(
+    'test_input,expectation',
+    [
+        ({'county_names': 'Los Angeles', 'other_jurisdiction': ''}, does_not_raise()),
+        ({'county_names': 'Los Angeles, San Diego', 'other_jurisdiction': ''}, does_not_raise()),
+        ({'county_names': '', 'other_jurisdiction': 'Calabasas'}, does_not_raise())
     ]
+)
+def test_county_jurisdiction(schema, valid_data, test_input, expectation):
+    data = update_data(test_input, valid_data)
 
-    data = data_updater(valid, valid_data)
-
-    schema.load(data)
-
-
-def test_reporting_jurisdictions_invalid(schema, valid_data):
-    invalid = [
-        {'reporting_jurisdiction': 'CAA'},
-        {'reporting_jurisdiction': 'I'},
-        {'reporting_jurisdiction': 'AA'},
-    ]
-
-    data = data_updater(invalid, valid_data)
-
-    with pytest.raises(ValidationError):
+    with expectation:
         schema.load(data)
-
-
-def test_county_jurisdiction_valid(schema, valid_data):
-    valid_input = [
-        {'county_names': 'Los Angeles', 'other_jurisdiction': ''},
-        {'county_names': 'Los Angeles, San Diego', 'other_jurisdiction': ''},
-        {'county_names': '', 'other_jurisdiction': 'Calabasas'}
-    ]
-
-    data = data_updater(valid_input, valid_data)
-
-    schema.load(data)
 
 
 def test_county_jurisdiction_invalid(schema, valid_data):
