@@ -24,7 +24,7 @@ def update_data(input, valid_data):
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -62,17 +62,17 @@ def update_data(input, valid_data):
         )
     ]
 )
-def test_reporting_jurisdictions(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
-    with expectation as e:
+def test_reporting_jurisdictions(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+    with expect as e:
         schema.load(list(data))
 
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -108,17 +108,18 @@ def test_reporting_jurisdictions(schema, valid_data, test_input, expectation, er
         )
     ]
 )
-def test_county_jurisdiction(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_county_jurisdiction(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
 
     if e:
-        assert  error_message in str(e.value)
+        assert error in str(e.value)
+
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -170,18 +171,18 @@ def test_county_jurisdiction(schema, valid_data, test_input, expectation, error_
         )
     ]
 )
-def test_sample_location_valid(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_sample_location_valid(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
 
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -227,17 +228,18 @@ def test_sample_location_valid(schema, valid_data, test_input, expectation, erro
         )
     ]
 )
-def test_institution_type(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_institution_type(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
-    
+
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
+
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -283,17 +285,18 @@ def test_institution_type(schema, valid_data, test_input, expectation, error_mes
         )
     ]
 )
-def test_epaid_valid(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_epaid_valid(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
 
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
+
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -339,17 +342,18 @@ def test_epaid_valid(schema, valid_data, test_input, expectation, error_message)
         )
     ]
 )
-def test_wwtp_jurisdictions(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_wwtp_jurisdictions(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
 
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
+
 
 @pytest.mark.parametrize(
-    'test_input,expectation,error_message',
+    'input,expect,error',
     [
         (
             {
@@ -395,11 +399,286 @@ def test_wwtp_jurisdictions(schema, valid_data, test_input, expectation, error_m
         )
     ]
 )
-def test_stormwater_input(schema, valid_data, test_input, expectation, error_message):
-    data = update_data(test_input, valid_data)
+def test_stormwater_input(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
 
-    with expectation as e:
+    with expect as e:
         schema.load(data)
 
     if e:
-        assert error_message in str(e.value)
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'influent_equilibrated': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'influent_equilibrated': 'no'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'influent_equilibrated': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'influent_equilibrated': 'y'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'influent_equilibrated': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'influent_equilibrated': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_influent_equilibrated(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_type': '24-hr flow-weighted composite'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_type': '12-hr manual composite'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_type': 'grab'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_type': 'y'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'sample_type': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'sample_type': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_sample_type(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_matrix': 'raw wastewater'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'primary sludge'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'holding tank'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'raw'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'sample_type': 'primary s'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'sample_type': 'holding'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_sample_matrix(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'pretreatment': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': 'no'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': 'y'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pretreatment': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pretreatment': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_pretreatment(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'pretreatment': 'yes',
+                'pretreatment_specify': 'treated with chemicals'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': 'no',
+                'pretreatment_specify': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': '',
+                'pretreatment_specify': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pretreatment': 'yes',
+                'pretreatment_specify': None
+            },
+            pytest.raises(ValidationError),
+            'If "pretreatment" is "yes", then specify the chemicals used.'
+        )
+    ]
+)
+def test_pretreatment_specify(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

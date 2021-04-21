@@ -101,3 +101,51 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         validate=validate.OneOf(value_sets.yes_no_empty)
     )
+
+    sample_type = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.sample_type)
+    )
+
+    composite_freq = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={
+                'Units': 'Flow-weighted composite: number per million gallons;'
+                         ' Time-weighted or manual composite: number per hour'
+            }
+    )
+
+    sample_matrix = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.sample_matrix)
+    )
+
+    collection_storage_time = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Hours'}
+    )
+
+    collection_storage_temp = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'Celsius'}
+    )
+
+    pretreatment = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )
+
+    pretreatment_specify = fields.String(
+        allow_none=True,
+    )
+
+    @validates_schema
+    def validate_pretreatment(self, data, **kwargs):
+        if data['pretreatment'] == 'yes' \
+          and not data.get('pretreatment_specify'):
+            raise ValidationError(
+                'If "pretreatment" is "yes", then specify '
+                'the chemicals used.'
+            )

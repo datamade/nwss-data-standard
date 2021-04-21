@@ -152,3 +152,33 @@ yes_no_empty = [
     'no',
     None
 ]
+
+sample_type = [
+    '24-hr flow-weighted composite',
+    '12-hr flow-weighted composite',
+    '8-hr flow-weighted composite',
+    '6-hr flow-weighted composite',
+    '3-hr flow-weighted composite',
+    '24-hr time-weighted composite',
+    '12-hr time-weighted composite',
+    '8-hr time-weighted composite',
+    '6-hr time-weighted composite',
+    '3-hr time-weighted composite',
+    '24-hr manual composite',
+    '12-hr manual composite',
+    '8-hr manual composite',
+    '6-hr manual composite',
+    '3-hr manual composite',
+    'grab',
+]
+
+sample_matrix = [
+    'raw wastewater',
+    'post grit removal',
+    'primary sludge',
+    'primary effluent ',
+    'secondary sludge',
+    'secondary effluent',
+    'septage',
+    'holding tank'
+]

@@ -1,4 +1,4 @@
-reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time,sample_location,sample_location_specify,institution_type,epaid,wwtp_name,wwtp_jurisdiction,capacity_mgd,industrial_input,stormwater_input,influent_equilibrated
-CA,"San Franscisco, Los Angeles",,90745,3500000,9.9,wwtp,,ship,CA0042234,LACSD_Jnt,CA,160,17,yes,no
-CA,,San Bernardino,92405,25000,,upstream,sample_loc_a,not institution specific,,OCSD_P1,CA,400,6,no,yes
-CA,Los Angeles,,90745,3500000,1.3,upstream,sample_loc_b,k12,AL0042234,LASAN_Hyp,CA,400,6,,
+reporting_jurisdiction,county_names,other_jurisdiction,zipcode,population_served,sewage_travel_time,sample_location,sample_location_specify,institution_type,epaid,wwtp_name,wwtp_jurisdiction,capacity_mgd,industrial_input,stormwater_input,influent_equilibrated,sample_type,sample_matrix,collection_storage_time,collection_storage_temp,pretreatment,pretreatment_specify
+CA,"San Franscisco, Los Angeles",,90745,3500000,9.9,wwtp,,ship,CA0042234,LACSD_Jnt,CA,160,17,yes,no,8-hr flow-weighted composite,raw wastewater,2,22,yes,chemical
+CA,,San Bernardino,92405,25000,,upstream,sample_loc_a,not institution specific,,OCSD_P1,CA,400,6,no,yes,24-hr manual composite,post grit removal,1,17,no,
+CA,Los Angeles,,90745,3500000,1.3,upstream,sample_loc_b,k12,AL0042234,LASAN_Hyp,CA,400,6,,,grab,primary sludge,,,,
