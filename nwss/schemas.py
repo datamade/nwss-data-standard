@@ -23,11 +23,8 @@ class WaterSampleSchema(Schema):
 
     @validates_schema
     def validate_county_jurisdiction(self, data, **kwargs):
-        """
-        Either county_names or other_jurisdiction must have a non-empty value.
-        """
         if not data['county_names'] and not data['other_jurisdiction']:
-            raise ValidationError('Either county_names or other_jurisdiction'
+            raise ValidationError('Either county_names or other_jurisdiction '
                                   'must have a value.')
 
     zipcode = fields.String(
@@ -60,7 +57,7 @@ class WaterSampleSchema(Schema):
     def validate_sample_location(self, data, **kwargs):
         if data['sample_location'] == 'upstream' \
           and not data.get('sample_location_specify', None):
-            raise ValidationError('An "upstream" sample_location must have'
+            raise ValidationError('An "upstream" sample_location must have '
                                   'a value for sample_location_specify.')
 
     institution_type = fields.String(
