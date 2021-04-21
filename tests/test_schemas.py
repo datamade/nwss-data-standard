@@ -81,8 +81,12 @@ def test_reporting_jurisdictions(schema, valid_data, test_input, expectation):
 def test_county_jurisdiction(schema, valid_data, test_input, expectation):
     data = update_data(test_input, valid_data)
 
-    with expectation:
+    with expectation as e:
         schema.load(data)
+
+    if e:
+        assert 'Either county_names or other_jurisdictionmust have a value.' \
+                in str(e.value)
 
 @pytest.mark.parametrize(
     'test_input,expectation',
@@ -134,8 +138,17 @@ def test_county_jurisdiction(schema, valid_data, test_input, expectation):
 def test_sample_location_valid(schema, valid_data, test_input, expectation):
     data = update_data(test_input, valid_data)
 
-    with expectation:
+    with expectation as e:
         schema.load(data)
+
+    if e:
+        try:
+            assert 'Field may not be null.' in str(e.value)
+        except AssertionError:
+            try:
+                assert 'Must be one of: wwtp, upstream.' in str(e.value)
+            except AssertionError:
+                assert 'An "upstream" sample_location must' in str(e.value)
 
 
 def test_institution_type_valid(schema, valid_data):
