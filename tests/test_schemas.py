@@ -18,9 +18,11 @@ def data_updater(fields_to_update, rows):
         row.update(**new_value)
     return rows
 
+
 @contextmanager
 def does_not_raise():
     yield
+
 
 def update_data(input, valid_data):
     data = valid_data.pop(0)
@@ -30,7 +32,7 @@ def update_data(input, valid_data):
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation', 
+    'test_input,expectation',
     [
         ({'reporting_jurisdiction': 'CA'}, does_not_raise()),
         ({'reporting_jurisdiction': 'IL'}, does_not_raise()),
@@ -44,12 +46,29 @@ def test_reporting_jurisdictions(schema, valid_data, test_input, expectation):
     with expectation:
         schema.load(list(data))
 
+
 @pytest.mark.parametrize(
     'test_input,expectation',
     [
-        ({'county_names': 'Los Angeles', 'other_jurisdiction': ''}, does_not_raise()),
-        ({'county_names': 'Los Angeles, San Diego', 'other_jurisdiction': ''}, does_not_raise()),
-        ({'county_names': '', 'other_jurisdiction': 'Calabasas'}, does_not_raise())
+        (
+            {
+                'county_names': 'Los Angeles',
+                'other_jurisdiction': ''
+            },
+            does_not_raise()),
+        (
+            {
+                'county_names': 'Los Angeles, San Diego',
+                'other_jurisdiction': ''
+            },
+            does_not_raise()
+        ),
+        (
+            {
+                'county_names': '',
+                'other_jurisdiction': 'Calabasas'
+            },
+            does_not_raise())
     ]
 )
 def test_county_jurisdiction(schema, valid_data, test_input, expectation):
@@ -188,6 +207,7 @@ def test_wwtp_jurisdictions_invalid(schema, valid_data):
 
     with pytest.raises(ValidationError):
         schema.load(data)
+
 
 def test_stormwater_input_valid(schema, valid_data):
     valid_input = [
