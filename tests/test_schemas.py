@@ -12,13 +12,6 @@ def test_invalid_data(schema, invalid_data):
         schema.load(invalid_data)
 
 
-def data_updater(fields_to_update, rows):
-    """Utility function to update test data on the fly."""
-    for new_value, row in zip(fields_to_update, rows):
-        row.update(**new_value)
-    return rows
-
-
 @contextmanager
 def does_not_raise():
     yield
@@ -31,221 +24,382 @@ def update_data(input, valid_data):
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation',
+    'test_input,expectation,error_message',
     [
-        ({'reporting_jurisdiction': 'CA'}, does_not_raise()),
-        ({'reporting_jurisdiction': 'IL'}, does_not_raise()),
-        ({'reporting_jurisdiction': 'AL'}, does_not_raise()),
-        ({'reporting_jurisdiction': 'CAA'}, pytest.raises(ValidationError)),
-        ({'reporting_jurisdiction': 'I'}, pytest.raises(ValidationError)),
-        ({'reporting_jurisdiction': 'AA'}, pytest.raises(ValidationError))
-    ])
-def test_reporting_jurisdictions(schema, valid_data, test_input, expectation):
+        (
+            {
+                'reporting_jurisdiction': 'CA'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'reporting_jurisdiction': 'IL'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {'reporting_jurisdiction': 'AL'},
+            does_not_raise(),
+            None
+        ),
+        (
+            {'reporting_jurisdiction': 'CAA'},
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {'reporting_jurisdiction': 'I'},
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {'reporting_jurisdiction': 'AA'},
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_reporting_jurisdictions(schema, valid_data, test_input, expectation, error_message):
     data = update_data(test_input, valid_data)
     with expectation as e:
         schema.load(list(data))
 
     if e:
-        assert 'Must be one of: AL' in str(e.value)
+        assert error_message in str(e.value)
 
 
 @pytest.mark.parametrize(
-    'test_input,expectation',
+    'test_input,expectation,error_message',
     [
         (
             {
                 'county_names': 'Los Angeles',
                 'other_jurisdiction': ''
             },
-            does_not_raise()),
+            does_not_raise(),
+            None
+        ),
         (
             {
                 'county_names': 'Los Angeles, San Diego',
                 'other_jurisdiction': ''
             },
-            does_not_raise()
+            does_not_raise(),
+            None
         ),
         (
             {
                 'county_names': '',
                 'other_jurisdiction': 'Calabasas'
             },
-            does_not_raise()
+            does_not_raise(),
+            None
         ),
         (
-            {'county_names': '', 'other_jurisdiction': ''},
-            pytest.raises(ValidationError)
+            {
+                'county_names': '',
+                'other_jurisdiction': ''
+            },
+            pytest.raises(ValidationError),
+            'Either county_names or other_jurisdiction must have a value.'
         )
     ]
 )
-def test_county_jurisdiction(schema, valid_data, test_input, expectation):
+def test_county_jurisdiction(schema, valid_data, test_input, expectation, error_message):
     data = update_data(test_input, valid_data)
 
     with expectation as e:
         schema.load(data)
 
     if e:
-        assert 'Either county_names or other_jurisdictionmust have a value.' \
-                in str(e.value)
+        assert  error_message in str(e.value)
 
 @pytest.mark.parametrize(
-    'test_input,expectation',
+    'test_input,expectation,error_message',
     [
         (
             {
                 'sample_location': 'wwtp',
                 'sample_location_specify': ''
             },
-            does_not_raise()
+            does_not_raise(),
+            None
         ),
         (
             {
                 'sample_location': 'wwtp',
                 'sample_location_specify': 'details'
             },
-            does_not_raise()
+            does_not_raise(),
+            None
         ),
         (
             {
                 'sample_location': 'upstream',
                 'sample_location_specify': 'location details'
             },
-            does_not_raise()
+            does_not_raise(),
+            None
         ),
         (
             {
                 'sample_location': 'upstream',
                 'sample_location_specify': ''
             },
-            pytest.raises(ValidationError)
+            pytest.raises(ValidationError),
+            'An "upstream" sample_location must'
         ),
         (
             {
                 'sample_location': 'invalid location',
                 'sample_location_specify': 'location details'
             },
-            pytest.raises(ValidationError)
+            pytest.raises(ValidationError),
+            'Must be one of: wwtp, upstream.'
         ),
         (
             {
                 'sample_location': '',
                 'sample_location_specify': ''
             },
-            pytest.raises(ValidationError)
+            pytest.raises(ValidationError),
+            'Field may not be null.'
         )
     ]
 )
-def test_sample_location_valid(schema, valid_data, test_input, expectation):
+def test_sample_location_valid(schema, valid_data, test_input, expectation, error_message):
     data = update_data(test_input, valid_data)
 
     with expectation as e:
         schema.load(data)
 
     if e:
-        try:
-            assert 'Field may not be null.' in str(e.value)
-        except AssertionError:
-            try:
-                assert 'Must be one of: wwtp, upstream.' in str(e.value)
-            except AssertionError:
-                assert 'An "upstream" sample_location must' in str(e.value)
+        assert error_message in str(e.value)
 
 
-def test_institution_type_valid(schema, valid_data):
-    valid = [
-        {'institution_type': 'long term care - nursing home'},
-        {'institution_type': 'child day care'},
-        {'institution_type': 'not institution specific'}
+@pytest.mark.parametrize(
+    'test_input,expectation,error_message',
+    [
+        (
+            {
+               'institution_type': 'long term care - nursing home'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'institution_type': 'child day care'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'institution_type': 'not institution specific'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'institution_type': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        ),
+        (
+            {
+                'institution_type': 'child day car'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'institution_type': 'none'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
     ]
+)
+def test_institution_type(schema, valid_data, test_input, expectation, error_message):
+    data = update_data(test_input, valid_data)
 
-    data = data_updater(valid, valid_data)
+    with expectation as e:
+        schema.load(data)
+    
+    if e:
+        assert error_message in str(e.value)
 
-    schema.load(data)
-
-
-def test_institution_type_invalid(schema, valid_data):
-    invalid = [
-        {'institution_type': ''},
-        {'institution_type': 'child day car'},
-        {'institution_type': 'none'}
+@pytest.mark.parametrize(
+    'test_input,expectation,error_message',
+    [
+        (
+            {
+                'epaid': 'AL0042234'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'epaid': 'ca2343454'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'epaid': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'epaid': 'CA1123'
+            },
+            pytest.raises(ValidationError),
+            'String does not match expected pattern.'
+        ),
+        (
+            {
+                'epaid': 'CAA112323'
+            },
+            pytest.raises(ValidationError),
+            'String does not match expected pattern.'
+        ),
+        (
+            {
+                'epaid': '0042234AL'
+            },
+            pytest.raises(ValidationError),
+            'String does not match expected pattern.'
+        )
     ]
+)
+def test_epaid_valid(schema, valid_data, test_input, expectation, error_message):
+    data = update_data(test_input, valid_data)
 
-    data = data_updater(invalid, valid_data)
-
-    with pytest.raises(ValidationError):
+    with expectation as e:
         schema.load(data)
 
+    if e:
+        assert error_message in str(e.value)
 
-def test_epaid_valid(schema, valid_data):
-    epaids = [
-        {'epaid': 'ca2343454'},
-        {'epaid': 'AL0042234'},
-        {'epaid': None}
+@pytest.mark.parametrize(
+    'test_input,expectation,error_message',
+    [
+        (
+            {
+                'wwtp_jurisdiction': 'AL'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'wwtp_jurisdiction': 'IL'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'wwtp_jurisdiction': 'MO'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'wwtp_jurisdiction': 'ALL'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'wwtp_jurisdiction': 'ILL'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'wwtp_jurisdiction': 'MOO!'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
     ]
+)
+def test_wwtp_jurisdictions(schema, valid_data, test_input, expectation, error_message):
+    data = update_data(test_input, valid_data)
 
-    data = data_updater(epaids, valid_data)
-
-    schema.load(data)
-
-
-def test_epaid_invalid(schema, valid_data):
-    invalid_epaids = [
-        {'epaid': 'CA1123'},
-        {'epaid': 'CAA112323'},
-        {'epaid': '0042234AL'}
-    ]
-
-    data = data_updater(invalid_epaids, valid_data)
-
-    with pytest.raises(ValidationError):
+    with expectation as e:
         schema.load(data)
 
+    if e:
+        assert error_message in str(e.value)
 
-def test_wwtp_jurisdictions_valid(schema, valid_data):
-    valid_juris = [
-        {'wwtp_jurisdiction': 'AL'},
-        {'wwtp_jurisdiction': 'IL'},
-        {'wwtp_jurisdiction': 'MO'}
+@pytest.mark.parametrize(
+    'test_input,expectation,error_message',
+    [
+        (
+            {
+                'stormwater_input': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'stormwater_input': 'no'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'stormwater_input': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'stormwater_input': 'y'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'stormwater_input': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'stormwater_input': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
     ]
+)
+def test_stormwater_input(schema, valid_data, test_input, expectation, error_message):
+    data = update_data(test_input, valid_data)
 
-    data = data_updater(valid_juris, valid_data)
-
-    schema.load(data)
-
-
-def test_wwtp_jurisdictions_invalid(schema, valid_data):
-    invalid_juris = [
-        {'wwtp_jurisdiction': 'ALL'},
-        {'wwtp_jurisdiction': 'ILL'},
-        {'wwtp_jurisdiction': 'MOO!'}
-    ]
-
-    data = data_updater(invalid_juris, valid_data)
-
-    with pytest.raises(ValidationError):
+    with expectation as e:
         schema.load(data)
 
-
-def test_stormwater_input_valid(schema, valid_data):
-    valid_input = [
-        {'stormwater_input': 'yes'},
-        {'stormwater_input': 'no'},
-        {'stormwater_input': ''}
-    ]
-
-    data = data_updater(valid_input, valid_data)
-
-    schema.load(data)
-
-
-def test_stormwater_input_invalid(schema, valid_data):
-    valid_input = [
-        {'stormwater_input': 'y'},
-        {'stormwater_input': 'n'},
-        {'stormwater_input': 'n/a'}
-    ]
-
-    data = data_updater(valid_input, valid_data)
-
-    with pytest.raises(ValidationError):
-        schema.load(data)
+    if e:
+        assert error_message in str(e.value)
