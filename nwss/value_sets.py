@@ -241,3 +241,29 @@ rec_eff_spike_matrix = [
     'sample concentrate',
     'lysis buffer'
 ]
+
+pcr_target = [
+    'n1',
+    'n2',
+    'n3',
+    'e_sarbeco',
+    'n_sarbeco',
+    'rdrp_sarsr',
+    'niid_2019-ncov_n',
+    'rdrp gene / ncov_ip2',
+    'rdrp gene / ncov_ip4',
+    'taqpath n',
+    'taqpath s',
+    'orf1b',
+    'orf1ab',
+    'n1 and n2 combined'
+]
+
+pcr_type = [
+    'qpcr',
+    'ddpcr',
+    'qiagen dpcr',
+    'fluidigm dpcr',
+    'life technologies dpcr',
+    'raindance dpcr'
+]

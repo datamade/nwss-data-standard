@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from marshmallow import ValidationError
 import pytest
+from nwss import value_sets
 
 
 def test_valid_data(schema, valid_data):
@@ -1054,6 +1055,120 @@ def test_eff_percent_target_name(schema, valid_data, input, expect, error):
     ]
 )
 def test_rec_eff_spike_matrix(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'pcr_target': 'e_sarbeco'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_target': 'niid_2019-ncov_n'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_target': 'rdrp gene / ncov_ip4'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_target': 'N 1'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pcr_target': 'sarbeco'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pcr_target': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        )
+    ]
+)
+def test_pcr_target(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'pcr_type': 'qpcr'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_type': 'fluidigm dpcr'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_type': 'raindance dpcr'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_type': 'pcr'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pcr_type': 'fluidigm'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'pcr_type': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        )
+    ]
+)
+def test_pcr_type(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:

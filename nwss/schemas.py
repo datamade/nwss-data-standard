@@ -273,3 +273,17 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         validate=validate.OneOf(value_sets.yes_no_empty)
     )
+
+    pcr_target = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.pcr_target)
+    )
+
+    pcr_target_ref = fields.String(
+        required=True
+    )
+
+    pcr_type = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.pcr_type)
+    )
