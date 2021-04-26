@@ -182,3 +182,42 @@ sample_matrix = [
     'septage',
     'holding tank'
 ]
+
+solids_separation = [
+    'filtration',
+    'centriguation',
+    'none',
+    None
+]
+
+concentration_method = [
+    'membrane filtration with addition of mgcl2',
+    'membrane filtration with sample acidification',
+    'membrane filtration with acidification and mgcl2',
+    'membrane filtration with no amendment',
+    'peg precipitation',
+    'ultracentrifugation',
+    'skimmed milk flocculation',
+    'beef extract flocculation',
+    'promega wastewater large volume tna capture kit',
+    'centricon ultrafiltration',
+    'amicon ultrafiltration',
+    'hollow fiber dead end ultrafiltration',
+    'none'
+]
+
+extraction_method = [
+    'qiagen allprep powerviral dna/rna kit',
+    'qiagen allprep powerfecal dna/rna kit',
+    'qiange allprep dna/rna kit',
+    'qiagen rneasy powermicrobiome kit',
+    'qiagen powerwater kit',
+    'qiagen rneasy kit',
+    'promega ht tna kit',
+    'promega automated tna kit',
+    'promega manual tna kit',
+    'promega wastewater large volume tna capture kit',
+    'nuclisens automated magnetic bead extraction kit',
+    'nuclisens manual magnetic bead extraction kit',
+    'phenol chloroform'
+]

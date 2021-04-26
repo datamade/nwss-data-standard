@@ -149,3 +149,18 @@ class WaterSampleSchema(Schema):
                 'If "pretreatment" is "yes", then specify '
                 'the chemicals used.'
             )
+
+    solids_separation = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.solids_separation)
+    )
+
+    concentration_method = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.concentration_method)
+    )
+
+    extraction_method = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.extraction_method)
+    )

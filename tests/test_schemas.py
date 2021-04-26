@@ -682,3 +682,208 @@ def test_pretreatment_specify(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'solids_separation': 'filtration'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'solids_separation': 'centriguation'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'solids_separation': 'none'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'solids_separation': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'solids_separation': 'filtered'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'solids_separation': 'centrig'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'solids_separation': 'NONE'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_solids_separation(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'concentration_method': 'membrane filtration with acidification and mgcl2'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'concentration_method': 'centricon ultrafiltration'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'concentration_method': 'none'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'concentration_method': 'promega wastewater large volume tna capture kit'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'concentration_method': 'membrane filtration'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'concentration_method': 'centrifugation'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'concentration_method': 'NONE'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'concentration_method': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        )
+    ]
+)
+def test_concentration_method(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'extraction_method': 'qiagen allprep powerfecal dna/rna kit'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'extraction_method': 'qiagen rneasy kit'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'extraction_method': 'promega manual tna kit'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'extraction_method': 'phenol chloroform'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'extraction_method': 'ht tna kit'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'extraction_method': 'powerviral dna/rna kit'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'extraction_method': 'none'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'extraction_method': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        )
+    ]
+)
+def test_concentration_method(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
