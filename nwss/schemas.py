@@ -164,3 +164,14 @@ class WaterSampleSchema(Schema):
         required=True,
         validate=validate.OneOf(value_sets.extraction_method)
     )
+
+    pre_conc_storage_time = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Hours'}
+    )
+
+    pre_conc_storage_temp = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'Celsius'}
+    )

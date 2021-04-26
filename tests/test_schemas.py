@@ -879,7 +879,7 @@ def test_concentration_method(schema, valid_data, input, expect, error):
         )
     ]
 )
-def test_concentration_method(schema, valid_data, input, expect, error):
+def test_extraction_method(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:
