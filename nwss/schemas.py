@@ -216,7 +216,7 @@ class WaterSampleSchema(Schema):
         """
 
         if not data['rec_eff_percent'] == -1 \
-          and not data['rec_eff_target_name']:
+           and not data['rec_eff_target_name']:
             raise ValidationError(
                 'rec_eff_target_name cannot be empty if '
                 'rec_eff_percent is not equal to -1.'
@@ -229,7 +229,7 @@ class WaterSampleSchema(Schema):
         # If we validate, then we'd need to do the same for
         # rec_eff_spike_matrix and rec_eff_spike_conc
         if data['rec_eff_percent'] == -1 \
-          and data['rec_eff_target_name']:
+           and data['rec_eff_target_name']:
             raise ValidationError(
                 'rec_eff_target_name must be empty if '
                 'rec_eff_percent == -1.'
@@ -246,7 +246,7 @@ class WaterSampleSchema(Schema):
         rec_eff_spike_matrix and rec_eff_target_name are dependent.
         """
         if data['rec_eff_target_name'] \
-          and not data['rec_eff_spike_matrix']:
+           and not data['rec_eff_spike_matrix']:
             raise ValidationError(
                 'If rec_eff_target_name has a non-empty value, '
                 'then rec_eff_spike_matrix must have a value.'
@@ -263,7 +263,7 @@ class WaterSampleSchema(Schema):
         rec_eff_spike_conc and rec_eff_target_name are dependent.
         """
         if data['rec_eff_target_name'] \
-          and not data.get('rec_eff_spike_conc'):
+           and not data.get('rec_eff_spike_conc'):
             raise ValidationError(
                 'If rec_eff_target_name has a non-empty value, '
                 'rec_eff_spike_conc must have a non-empty value.'
