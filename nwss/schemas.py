@@ -181,7 +181,7 @@ class WaterSampleSchema(Schema):
         validate=validate.Range(min=0),
         metadata={'Units': 'Hours'}
     )
-    
+
     pre_ext_storage_temp = fields.Float(
         allow_none=True,
         metadata={'Units': 'Celsius'}
@@ -214,6 +214,7 @@ class WaterSampleSchema(Schema):
         """
         rec_eff_target_name and rec_eff_percent are dependent.
         """
+
         if not data['rec_eff_percent'] == -1 \
           and not data['rec_eff_target_name']:
             raise ValidationError(
@@ -222,9 +223,9 @@ class WaterSampleSchema(Schema):
             )
 
         # TODO:
-        # The docs vaguely imply that a rec_eff_percent of -1 would require 
+        # The docs vaguely imply that a rec_eff_percent of -1 would require
         # that none of the rec_eff_* fields should have a value.
-        # So, should we validate that or leave it alone? 
+        # So, should we validate that or leave it alone?
         # If we validate, then we'd need to do the same for
         # rec_eff_spike_matrix and rec_eff_spike_conc
         if data['rec_eff_percent'] == -1 \

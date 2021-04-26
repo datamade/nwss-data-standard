@@ -753,7 +753,8 @@ def test_solids_separation(schema, valid_data, input, expect, error):
     [
         (
             {
-                'concentration_method': 'membrane filtration with acidification and mgcl2'
+                'concentration_method': 'membrane filtration '
+                'with acidification and mgcl2'
             },
             does_not_raise(),
             None
@@ -774,7 +775,8 @@ def test_solids_separation(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'concentration_method': 'promega wastewater large volume tna capture kit'
+                'concentration_method': 'promega wastewater '
+                'large volume tna capture kit'
             },
             does_not_raise(),
             None
@@ -817,6 +819,7 @@ def test_concentration_method(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
 
 @pytest.mark.parametrize(
     'input,expect,error',
