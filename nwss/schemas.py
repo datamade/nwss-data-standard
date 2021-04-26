@@ -175,3 +175,25 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         metadata={'Units': 'Celsius'}
     )
+
+    pre_ext_storage_time = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Hours'}
+    )
+    
+    pre_ext_storage_temp = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'Celsius'}
+    )
+
+    tot_conc_vol = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'mL'}
+    )
+
+    ext_blank = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )

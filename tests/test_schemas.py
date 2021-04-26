@@ -887,3 +887,60 @@ def test_extraction_method(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'ext_blank': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ext_blank': 'no'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ext_blank': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ext_blank': 'y'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'ext_blank': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'ext_blank': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_ext_blank(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
