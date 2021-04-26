@@ -944,3 +944,117 @@ def test_ext_blank(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'rec_eff_percent': 11,
+                'rec_eff_target_name': 'bcov vaccine'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'rec_eff_percent': 52,
+                'rec_eff_target_name': 'oc43'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'rec_eff_percent': -1,
+                'rec_eff_target_name': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'rec_eff_percent': -1,
+                'rec_eff_target_name': 'murine coronavirus'
+            },
+            pytest.raises(ValidationError),
+            'rec_eff_target_name must be empty'
+        ),
+        (
+            {
+                'rec_eff_percent': 63,
+                'rec_eff_target_name': ''
+            },
+            pytest.raises(ValidationError),
+            'rec_eff_target_name cannot be empty'
+        ),
+        (
+            {
+                'rec_eff_percent': 57,
+                'rec_eff_target_name': 'coliphage'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_eff_percent_target_name(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'rec_eff_percent': 52,
+                'rec_eff_target_name': 'oc43',
+                'rec_eff_spike_matrix': 'raw sample post pasteurization'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'rec_eff_percent': -1,
+                'rec_eff_target_name': '',
+                'rec_eff_spike_matrix': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'rec_eff_percent': 86,
+                'rec_eff_target_name': 'phi6',
+                'rec_eff_spike_matrix': ''
+            },
+            pytest.raises(ValidationError),
+            'rec_eff_spike_matrix must have a value'
+        ),
+        (
+            {
+                'rec_eff_percent': 63,
+                'rec_eff_target_name': 'oc43',
+                'rec_eff_spike_matrix': 'sample'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_rec_eff_spike_matrix(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

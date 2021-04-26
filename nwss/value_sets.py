@@ -221,3 +221,23 @@ extraction_method = [
     'nuclisens manual magnetic bead extraction kit',
     'phenol chloroform'
 ]
+
+rec_eff_target_name = [
+    'bcov vaccine',
+    'brsv vaccine',
+    'murine coronavirus',
+    'oc43',
+    'phi6',
+    'puro',
+    'ms2 coliphage',
+    'hep g armored rna',
+    None
+]
+
+rec_eff_spike_matrix = [
+    'raw sample',
+    'raw sample post pasteurization',
+    'clarified sample',
+    'sample concentrate',
+    'lysis buffer'
+]
