@@ -222,6 +222,7 @@ class WaterSampleSchema(Schema):
                 'rec_eff_percent is not equal to -1.'
             )
 
+        
         # TODO:
         # The docs vaguely imply that a rec_eff_percent of -1 would require
         # that none of the rec_eff_* fields should have a value.
@@ -287,3 +288,54 @@ class WaterSampleSchema(Schema):
         required=True,
         validate=validate.OneOf(value_sets.pcr_type)
     )
+
+    lod_ref = fields.String(
+        required=True
+    )
+
+    hum_frac_mic_conc = fields.Float(
+        allow_none=True,
+        metadata={'Units': "units specified in 'hum_frac_mic_unit'"}
+    )
+
+    hum_frac_mic_unit = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.mic_units)
+    )
+    
+    hum_frac_target_mic = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.hum_frac_target_mic)
+    )
+
+    hum_frac_target_mic_ref = fields.String(
+        allow_none=True
+    )
+
+    @validates_schema
+    def validate_hum_frac_mic_conc(self, data, **kwargs):
+        """
+        If hum_frac_mic_conc is not empty, then validate 
+        the dependent fields.
+        """
+        dependent = [
+            'hum_frac_mic_unit',
+            'hum_frac_target_mic',
+            'hum_frac_target_mic_ref'
+        ]
+
+        if data.get('hum_frac_mic_conc') \
+           and not all(data.get(key) for key in dependent):
+            raise ValidationError(
+                'Must provide a hum_frac_mic_conc '
+                'with a hum_frac_mic_unit, '
+                'hum_frac_target_mic, and '
+                'hum_frac_target_mic_ref.'
+            )
+        
+        # print('data')
+        # print(data)
+        # raise Exception()
+
+    # TODO test hum_frac
+    # add the rest of the fields + validation

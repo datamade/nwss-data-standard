@@ -1176,3 +1176,99 @@ def test_pcr_type(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'hum_frac_mic_conc': 12.02,
+                'hum_frac_mic_unit': 'copies/L wastewater',
+                'hum_frac_target_mic': 'pepper mild mottle virus',
+                'hum_frac_target_mic_ref': 'www.frac-conc-info.com'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 0.9987,
+                'hum_frac_mic_unit': 'copies/g wet sludge',
+                'hum_frac_target_mic': 'crassphage'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 112.700234,
+                'hum_frac_mic_unit': 'log10 copies/g dry sludge',
+                'hum_frac_target_mic': 'hf183'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 22.021,
+                'hum_frac_mic_unit': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must provide a hum_frac_mic_conc '
+            'with a hum_frac_mic_unit, '
+            'hum_frac_target_mic, and '
+            'hum_frac_target_mic_ref.'
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 22.021,
+                'hum_frac_mic_unit': 'log10 copies/g dry sludge',
+                'hum_frac_target_mic': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must provide a hum_frac_mic_conc '
+            'with a hum_frac_mic_unit, '
+            'hum_frac_target_mic, and '
+            'hum_frac_target_mic_ref.'
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 22.021,
+                'hum_frac_mic_unit': 'log10 copies/g dry sludge',
+                'hum_frac_target_mic': 'hf183',
+                'hum_frac_target_mic_ref': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must provide a hum_frac_mic_conc '
+            'with a hum_frac_mic_unit, '
+            'hum_frac_target_mic, and '
+            'hum_frac_target_mic_ref.'
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 22.021,
+                'hum_frac_mic_unit': 'wastewater unit' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 112.700234,
+                'hum_frac_mic_unit': 'log10 copies/g dry sludge',
+                'hum_frac_target_mic': '183' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+    ]
+)
+def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

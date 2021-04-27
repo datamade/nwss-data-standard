@@ -267,3 +267,18 @@ pcr_type = [
     'life technologies dpcr',
     'raindance dpcr'
 ]
+
+mic_units = [
+    'copies/L wastewater',
+    'log10 copies/L wastewater',
+    'copies/g wet sludge',
+    'log10 copies/g wet sludge',
+    'copies/g dry sludge',
+    'log10 copies/g dry sludge'
+]
+
+hum_frac_target_mic = [
+    'pepper mild mottle virus',
+    'crassphage',
+    'hf183'
+]
