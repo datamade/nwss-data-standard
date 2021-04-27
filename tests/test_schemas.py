@@ -1215,8 +1215,8 @@ def test_pcr_type(schema, valid_data, input, expect, error):
                 'hum_frac_mic_unit': None # test for this field
             },
             pytest.raises(ValidationError),
-            'Must provide a hum_frac_mic_conc '
-            'with a hum_frac_mic_unit, '
+            'If hum_frac_mic_conc is not empty, then '
+            'must provide hum_frac_mic_unit, '
             'hum_frac_target_mic, and '
             'hum_frac_target_mic_ref.'
         ),
@@ -1227,8 +1227,8 @@ def test_pcr_type(schema, valid_data, input, expect, error):
                 'hum_frac_target_mic': None # test for this field
             },
             pytest.raises(ValidationError),
-            'Must provide a hum_frac_mic_conc '
-            'with a hum_frac_mic_unit, '
+            'If hum_frac_mic_conc is not empty, then '
+            'must provide hum_frac_mic_unit, '
             'hum_frac_target_mic, and '
             'hum_frac_target_mic_ref.'
         ),
@@ -1240,8 +1240,8 @@ def test_pcr_type(schema, valid_data, input, expect, error):
                 'hum_frac_target_mic_ref': None # test for this field
             },
             pytest.raises(ValidationError),
-            'Must provide a hum_frac_mic_conc '
-            'with a hum_frac_mic_unit, '
+            'If hum_frac_mic_conc is not empty, then '
+            'must provide hum_frac_mic_unit, '
             'hum_frac_target_mic, and '
             'hum_frac_target_mic_ref.'
         ),
@@ -1265,6 +1265,88 @@ def test_pcr_type(schema, valid_data, input, expect, error):
     ]
 )
 def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'hum_frac_chem_conc': 1.02,
+                'hum_frac_chem_unit': 'micrograms/g dry sludge',
+                'hum_frac_target_chem': 'caffeine',
+                'hum_frac_target_chem_ref': 'chem-conc-info.com'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 33.87,
+                'hum_frac_chem_unit': 'log10 micrograms/g wet sludge',
+                'hum_frac_target_chem': 'sucralose',
+                'hum_frac_target_chem_ref': 'chem conc resource'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 22.021,
+                'hum_frac_chem_unit': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If hum_frac_chem_unit is not empty, '
+            'then hum_frac_chem_unit, hum_frac_target_chem, '
+            'and hum_frac_target_chem_ref cannot be null.'
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 96.331,
+                'hum_frac_target_chem': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If hum_frac_chem_unit is not empty, '
+            'then hum_frac_chem_unit, hum_frac_target_chem, '
+            'and hum_frac_target_chem_ref cannot be null.'
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 96.331,
+                'hum_frac_target_chem_ref': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If hum_frac_chem_unit is not empty, '
+            'then hum_frac_chem_unit, hum_frac_target_chem, '
+            'and hum_frac_target_chem_ref cannot be null.'
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 22.021,
+                'hum_frac_chem_unit': 'wastewater unit' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 33.87,
+                'hum_frac_chem_unit': 'log10 micrograms/g wet sludge',
+                'hum_frac_target_chem': 'sucra' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+    ]
+)
+def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:

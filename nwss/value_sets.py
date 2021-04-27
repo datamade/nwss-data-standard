@@ -282,3 +282,19 @@ hum_frac_target_mic = [
     'crassphage',
     'hf183'
 ]
+
+chem_units = [
+    'micrograms/L wastewater',
+    'log10 micrograms/L wastewater',
+    'micrograms/g wet sludge',
+    'log10 micrograms/g wet sludge',
+    'micrograms/g dry sludge',
+    'log10 micrograms/g dry sludge'
+]
+
+hum_frac_target_chem = [
+    'caffeine',
+    'creatinine',
+    'sucralose',
+    'ibuprofen'
+]

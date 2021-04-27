@@ -295,7 +295,7 @@ class WaterSampleSchema(Schema):
 
     hum_frac_mic_conc = fields.Float(
         allow_none=True,
-        metadata={'Units': "units specified in 'hum_frac_mic_unit'"}
+        metadata={'Units': "specified in 'hum_frac_mic_unit'"}
     )
 
     hum_frac_mic_unit = fields.String(
@@ -327,15 +327,47 @@ class WaterSampleSchema(Schema):
         if data.get('hum_frac_mic_conc') \
            and not all(data.get(key) for key in dependent):
             raise ValidationError(
-                'Must provide a hum_frac_mic_conc '
-                'with a hum_frac_mic_unit, '
+                'If hum_frac_mic_conc is not empty, then '
+                'must provide hum_frac_mic_unit, '
                 'hum_frac_target_mic, and '
                 'hum_frac_target_mic_ref.'
             )
-        
-        # print('data')
-        # print(data)
-        # raise Exception()
 
-    # TODO test hum_frac
-    # add the rest of the fields + validation
+    hum_frac_chem_conc = fields.Float(
+        allow_none=True,
+        metadat={'Units': "specified in 'hum_frac_chem_unit'."}
+    )
+
+    hum_frac_chem_unit = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.chem_units)
+    )
+
+    hum_frac_target_chem = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.hum_frac_target_chem)
+    )
+
+    hum_frac_target_chem_ref = fields.String(
+        allow_none=True
+    )
+
+    @validates_schema
+    def validate_hum_frac_chem_conc(self, data, **kwargs):
+        """
+        If hum_frac_chem_conc is not empty, then 
+        validate the dependent fields.
+        """
+        dependent = [
+            'hum_frac_chem_unit',
+            'hum_frac_target_chem',
+            'hum_frac_target_chem_ref'
+        ]
+
+        if data.get('hum_frac_chem_conc') \
+           and not all(data.get(key) for key in dependent):
+            raise ValidationError(
+                'If hum_frac_chem_unit is not empty, '
+                'then hum_frac_chem_unit, hum_frac_target_chem, '
+                'and hum_frac_target_chem_ref cannot be null.'
+            )
