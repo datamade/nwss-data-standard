@@ -1,7 +1,6 @@
 from contextlib import contextmanager
 from marshmallow import ValidationError
 import pytest
-from nwss import value_sets
 
 
 def test_valid_data(schema, valid_data):
@@ -1212,7 +1211,7 @@ def test_pcr_type(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_mic_conc': 22.021,
-                'hum_frac_mic_unit': None # test for this field
+                'hum_frac_mic_unit': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_mic_conc is not empty, then '
@@ -1224,7 +1223,7 @@ def test_pcr_type(schema, valid_data, input, expect, error):
             {
                 'hum_frac_mic_conc': 22.021,
                 'hum_frac_mic_unit': 'log10 copies/g dry sludge',
-                'hum_frac_target_mic': None # test for this field
+                'hum_frac_target_mic': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_mic_conc is not empty, then '
@@ -1237,7 +1236,7 @@ def test_pcr_type(schema, valid_data, input, expect, error):
                 'hum_frac_mic_conc': 22.021,
                 'hum_frac_mic_unit': 'log10 copies/g dry sludge',
                 'hum_frac_target_mic': 'hf183',
-                'hum_frac_target_mic_ref': None # test for this field
+                'hum_frac_target_mic_ref': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_mic_conc is not empty, then '
@@ -1248,7 +1247,7 @@ def test_pcr_type(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_mic_conc': 22.021,
-                'hum_frac_mic_unit': 'wastewater unit' # test for this field
+                'hum_frac_mic_unit': 'wastewater unit'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -1257,7 +1256,7 @@ def test_pcr_type(schema, valid_data, input, expect, error):
             {
                 'hum_frac_mic_conc': 112.700234,
                 'hum_frac_mic_unit': 'log10 copies/g dry sludge',
-                'hum_frac_target_mic': '183' # test for this field
+                'hum_frac_target_mic': '183'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -1300,7 +1299,7 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_chem_conc': 22.021,
-                'hum_frac_chem_unit': None # test for this field
+                'hum_frac_chem_unit': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_chem_unit is not empty, '
@@ -1310,7 +1309,7 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_chem_conc': 96.331,
-                'hum_frac_target_chem': None # test for this field
+                'hum_frac_target_chem': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_chem_unit is not empty, '
@@ -1320,7 +1319,7 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_chem_conc': 96.331,
-                'hum_frac_target_chem_ref': None # test for this field
+                'hum_frac_target_chem_ref': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If hum_frac_chem_unit is not empty, '
@@ -1330,7 +1329,7 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
         (
             {
                 'hum_frac_chem_conc': 22.021,
-                'hum_frac_chem_unit': 'wastewater unit' # test for this field
+                'hum_frac_chem_unit': 'wastewater unit'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -1339,7 +1338,7 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
             {
                 'hum_frac_chem_conc': 33.87,
                 'hum_frac_chem_unit': 'log10 micrograms/g wet sludge',
-                'hum_frac_target_chem': 'sucra' # test for this field
+                'hum_frac_target_chem': 'sucra'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -1382,7 +1381,7 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
         (
             {
                 'other_norm_conc': 22.021,
-                'other_norm_unit': None # test for this field
+                'other_norm_unit': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If other_norm_conc is not empty, then '
@@ -1391,7 +1390,7 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
         (
             {
                 'other_norm_conc': 96.331,
-                'other_norm_name': None # test for this field
+                'other_norm_name': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If other_norm_conc is not empty, then '
@@ -1400,7 +1399,7 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
         (
             {
                 'other_norm_conc': 96.331,
-                'other_norm_ref': None # test for this field
+                'other_norm_ref': None  # test for this field
             },
             pytest.raises(ValidationError),
             'If other_norm_conc is not empty, then '
@@ -1409,7 +1408,7 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
         (
             {
                 'other_norm_conc': 22.021,
-                'other_norm_unit': 'wastewater unit' # test for this field
+                'other_norm_unit': 'wastewater unit'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -1418,7 +1417,7 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
             {
                 'other_norm_conc': 33.87,
                 'other_norm_unit': 'micrograms/L wastewater',
-                'other_norm_name': 'sucra' # test for this field
+                'other_norm_name': 'sucra'  # test for this field
             },
             pytest.raises(ValidationError),
             'Must be one of:'

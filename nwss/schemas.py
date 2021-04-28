@@ -1,4 +1,3 @@
-import re
 from marshmallow import Schema, fields, \
     validate, ValidationError, validates_schema
 from marshmallow.decorators import pre_load
@@ -223,7 +222,6 @@ class WaterSampleSchema(Schema):
                 'rec_eff_percent is not equal to -1.'
             )
 
-        
         # TODO:
         # The docs vaguely imply that a rec_eff_percent of -1 would require
         # that none of the rec_eff_* fields should have a value.
@@ -303,7 +301,7 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         validate=validate.OneOf(value_sets.mic_units)
     )
-    
+
     hum_frac_target_mic = fields.String(
         allow_none=True,
         validate=validate.OneOf(value_sets.hum_frac_target_mic)
@@ -316,9 +314,9 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_hum_frac_mic_conc(self, data, **kwargs):
         """
-        If hum_frac_mic_conc is not empty, then 
-        validate that the dependent fields
-        are not empty.
+        If hum_frac_mic_conc is not empty, then
+         validate that the dependent fields
+         are not empty.
         """
         dependent = [
             'hum_frac_mic_unit',
@@ -357,9 +355,9 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_hum_frac_chem_conc(self, data, **kwargs):
         """
-        If hum_frac_chem_conc is not empty, then 
-        validate that the dependent fields
-        are not empty.
+        If hum_frac_chem_conc is not empty, then
+         validate that the dependent fields
+         are not empty.
         """
         dependent = [
             'hum_frac_chem_unit',
@@ -383,12 +381,12 @@ class WaterSampleSchema(Schema):
         allow_none=True,
         validate=validate.OneOf(value_sets.other_norm_name)
     )
-    
+
     other_norm_unit = fields.String(
         allow_none=True,
         validate=validate.OneOf(value_sets.mic_chem_units)
     )
-    
+
     other_norm_ref = fields.String(
         allow_none=True
     )
@@ -396,9 +394,9 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_other_norm_conc(self, data, **kwargs):
         """
-        If other_norm_conc is not empty, then 
-        validate that the dependent fields
-        are not empty.
+        If other_norm_conc is not empty, then
+         validate that the dependent fields
+         are not empty.
         """
         dependent = [
             'other_norm_name',
@@ -408,10 +406,10 @@ class WaterSampleSchema(Schema):
 
         if data.get('other_norm_conc') \
            and not all(data.get(key) for key in dependent):
-           raise ValidationError(
-                'If other_norm_conc is not empty, then '
-                'other_norm_name cannot be null.'
-           )
+            raise ValidationError(
+                    'If other_norm_conc is not empty, then '
+                    'other_norm_name cannot be null.'
+            )
 
     quant_stan_type = fields.String(
         required=True,
@@ -421,7 +419,6 @@ class WaterSampleSchema(Schema):
     stan_ref = fields.String(
         required=True
     )
-    
 
     inhibition_detect = fields.String(
         required=True,
