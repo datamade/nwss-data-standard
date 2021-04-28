@@ -315,8 +315,9 @@ class WaterSampleSchema(Schema):
     @validates_schema
     def validate_hum_frac_mic_conc(self, data, **kwargs):
         """
-        If hum_frac_mic_conc is not empty, then validate 
-        the dependent fields.
+        If hum_frac_mic_conc is not empty, then 
+        validate that the dependent fields
+        are not empty.
         """
         dependent = [
             'hum_frac_mic_unit',
@@ -356,7 +357,8 @@ class WaterSampleSchema(Schema):
     def validate_hum_frac_chem_conc(self, data, **kwargs):
         """
         If hum_frac_chem_conc is not empty, then 
-        validate the dependent fields.
+        validate that the dependent fields
+        are not empty.
         """
         dependent = [
             'hum_frac_chem_unit',
@@ -371,3 +373,42 @@ class WaterSampleSchema(Schema):
                 'then hum_frac_chem_unit, hum_frac_target_chem, '
                 'and hum_frac_target_chem_ref cannot be null.'
             )
+
+    other_norm_conc = fields.Float(
+        allow_none=True
+    )
+
+    other_norm_name = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.other_norm_name)
+    )
+    
+    other_norm_unit = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.mic_chem_units)
+    )
+    
+    other_norm_ref = fields.String(
+        allow_none=True
+    )
+
+    @validates_schema
+    def validate_other_norm_conc(self, data, **kwargs):
+        """
+        If other_norm_conc is not empty, then 
+        validate that the dependent fields
+        are not empty.
+        """
+        dependent = [
+            'other_norm_name',
+            'other_norm_unit',
+            'other_norm_ref'
+        ]
+
+        if data.get('other_norm_conc') \
+           and not all(data.get(key) for key in dependent):
+           raise ValidationError(
+                'If other_norm_conc is not empty, then '
+                'other_norm_name cannot be null.'
+           )
+

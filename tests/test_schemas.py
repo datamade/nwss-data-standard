@@ -1354,3 +1354,82 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'other_norm_conc': 1.02,
+                'other_norm_name': 'pepper mild mottle virus',
+                'other_norm_unit': 'log10 micrograms/g dry sludge',
+                'other_norm_ref': 'norm-conc-info.com'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'other_norm_conc': 33.07,
+                'other_norm_name': 'caffeine',
+                'other_norm_unit': 'micrograms/L wastewater',
+                'other_norm_ref': 'norm conc resource'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'other_norm_conc': 22.021,
+                'other_norm_unit': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If other_norm_conc is not empty, then '
+            'other_norm_name cannot be null.'
+        ),
+        (
+            {
+                'other_norm_conc': 96.331,
+                'other_norm_name': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If other_norm_conc is not empty, then '
+            'other_norm_name cannot be null.'
+        ),
+        (
+            {
+                'other_norm_conc': 96.331,
+                'other_norm_ref': None # test for this field
+            },
+            pytest.raises(ValidationError),
+            'If other_norm_conc is not empty, then '
+            'other_norm_name cannot be null.'
+        ),
+        (
+            {
+                'other_norm_conc': 22.021,
+                'other_norm_unit': 'wastewater unit' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'other_norm_conc': 33.87,
+                'other_norm_unit': 'micrograms/L wastewater',
+                'other_norm_name': 'sucra' # test for this field
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+    ]
+)
+def test_other_norm_conc(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

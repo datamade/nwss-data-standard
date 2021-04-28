@@ -298,3 +298,28 @@ hum_frac_target_chem = [
     'sucralose',
     'ibuprofen'
 ]
+
+mic_chem_units = [
+    'copies/L wastewater',
+    'log10 copies/L wastewater',
+    'copies/g wet sludge',
+    'log10 copies/g wet sludge',
+    'copies/g dry sludge',
+    'log10 copies/g dry sludge',
+    'micrograms/L wastewater',
+    'log10 micrograms/L wastewater',
+    'micrograms/g wet sludge',
+    'log10 micrograms/g wet sludge',
+    'micrograms/g dry sludge',
+    'log10 micrograms/g dry sludge'
+]
+
+other_norm_name = [
+    'pepper mild mottle virus',
+    'crassphage',
+    'hf183',
+    'caffeine',
+    'creatinine',
+    'sucralose',
+    'ibuprofen'
+]
