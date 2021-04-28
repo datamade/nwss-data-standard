@@ -1,5 +1,7 @@
+import datetime
+import re
 from marshmallow import Schema, fields, \
-    validate, ValidationError, validates_schema
+    validate, ValidationError, validates_schema, validates
 from marshmallow.decorators import pre_load
 
 from nwss import value_sets, fields as nwss_fields
@@ -451,3 +453,95 @@ class WaterSampleSchema(Schema):
                 "'inhibition_method' must be 'none' "
                 "if inhibition_detect == 'not tested'."
             )
+
+    num_no_target_control = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.num_no_target_control)
+    )
+
+    sample_collect_date = fields.Date(
+        required=True
+    )
+
+    @validates('sample_collect_date')
+    def validate_sample_collect_date(self, value):
+        tomorrow = datetime.date.today() + datetime.timedelta(hours=24)
+        
+        if value > tomorrow:
+            raise ValidationError(
+                "'sample_collect_date' cannot be after "
+                "tomorrow's date."
+            )
+    
+    sample_collect_time = fields.Time(
+        required=True
+    )
+
+    time_zone = fields.String(
+        allow_none=True
+    )
+
+    @validates('time_zone')
+    def validate_time_zone(self, value):
+        # TODO: case sensitive or no?
+        regex = re.compile('utc-(\d{2}):(\d{2})')
+
+        if value and not regex.match(value):
+            raise ValidationError(
+                "Not a valid time_zone."
+            )
+
+    flow_rate = fields.Float(
+        required=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Million gallons per day (MGD)'}
+    )
+
+    ph = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'pH units'}
+    )
+
+    conductivity = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'microsiemens/cm'}
+    )
+
+    tss = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'mg/L'}
+    )
+
+    collection_water_temp = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'Celsius'}
+    )
+
+    equiv_sewage_amt = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=0),
+        metadata={'Units': 'mL wastewater or g sludge'}
+    )
+
+    sample_id = fields.String(
+        required=True,
+        validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$')
+    )
+    lab_id = fields.String(
+        required=True,
+        validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$') # duplicate from above
+    )
+
+    test_result_date = None
+    sars_cov2_units = None
+    sars_cov2_avg_conc = None
+    sars_cov2_std_error = None
+    sars_cov2_cl_95_lo = None
+    sars_cov2_cl_95_up = None
+    sars_cov2_below_lod = None
+    lod_sewage = None
+    ntc_amplify = None
+    quality_flag = None

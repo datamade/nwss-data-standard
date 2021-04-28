@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from marshmallow import ValidationError
 import pytest
+import datetime
 
 
 def test_valid_data(schema, valid_data):
@@ -1545,6 +1546,207 @@ def test_quant_stan_type(schema, valid_data, input, expect, error):
     ]
 )
 def test_inhibition_detect(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'num_no_target_control': '0'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'num_no_target_control': 'more than 3'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'num_no_target_control': 'zero'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'num_no_target_control': '> 3'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_num_no_target_control(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+
+# Not a valid time
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_collect_date': '2021-04-28'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_collect_date': (datetime.date.today() + 
+                                       datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_collect_date': (datetime.date.today() +
+                                       datetime.timedelta(hours=48)).strftime('%Y-%m-%d')
+            },
+            pytest.raises(ValidationError),
+            "'sample_collect_date' cannot be after "
+            "tomorrow's date."
+        ),
+        (
+            {
+                'sample_collect_date': '04/15/2021'
+            },
+            pytest.raises(ValidationError),
+            'Not a valid date'
+        )
+    ]
+)
+def test_sample_collect_date(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_collect_time': '23:04'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_collect_time': '04/15/2021'
+            },
+            pytest.raises(ValidationError),
+            'Not a valid time'
+        )
+    ]
+)
+def test_sample_collect_time(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'time_zone': 'utc-08:00'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'time_zone': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'time_zone': 'central'
+            },
+            pytest.raises(ValidationError),
+            'Not a valid time'
+        )
+    ]
+)
+def test_time_zone(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+# RFDIE8AS-73619djfshf,fdsaier8_73619djfshf
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_id': 'RFDIE8AS-73619djfshf',
+                'lab_id': 'fdsaier8873619djfshf'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_id': 'RFDIE8AS_73619djfshf',
+                'lab_id': 'fdsaier-873619djfshf'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_id': 'fdsaier8473619djfshf55fdafd', # too many characters
+            },
+            pytest.raises(ValidationError),
+            'String does not match expected pattern.'
+        ),
+        (
+            {
+                'lab_id': 'fdsa#$%8%73619djfshf', # illegal characters
+            },
+            pytest.raises(ValidationError),
+            'String does not match expected pattern.'
+        )
+    ]
+)
+def test_sample_and_lab_id(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:

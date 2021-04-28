@@ -334,3 +334,11 @@ yes_no_not_tested = [
     'no',
     'not tested'
 ]
+
+num_no_target_control = [
+    '0',
+    '1',
+    '2',
+    '3',
+    'more than 3'
+]
