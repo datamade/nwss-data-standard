@@ -24,6 +24,12 @@ def update_data(input, valid_data):
     return [data]
 
 
+def get_future_date(hours):
+    future_date = (datetime.date.today() +
+                   datetime.timedelta(hours=hours))
+    return future_date.strftime('%Y-%m-%d')
+
+
 @pytest.mark.parametrize(
     'input,expect,error',
     [
@@ -1598,8 +1604,6 @@ def test_num_no_target_control(schema, valid_data, input, expect, error):
         assert error in str(e.value)
 
 
-
-# Not a valid time
 @pytest.mark.parametrize(
     'input,expect,error',
     [
@@ -1612,16 +1616,14 @@ def test_num_no_target_control(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'sample_collect_date': (datetime.date.today() + 
-                                       datetime.timedelta(hours=24)).strftime('%Y-%m-%d')
+                'sample_collect_date': get_future_date(24)
             },
             does_not_raise(),
             None
         ),
         (
             {
-                'sample_collect_date': (datetime.date.today() +
-                                       datetime.timedelta(hours=48)).strftime('%Y-%m-%d')
+                'sample_collect_date': get_future_date(48)
             },
             pytest.raises(ValidationError),
             "'sample_collect_date' cannot be after "
@@ -1710,7 +1712,7 @@ def test_time_zone(schema, valid_data, input, expect, error):
     if e:
         assert error in str(e.value)
 
-# RFDIE8AS-73619djfshf,fdsaier8_73619djfshf
+
 @pytest.mark.parametrize(
     'input,expect,error',
     [
@@ -1732,14 +1734,16 @@ def test_time_zone(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'sample_id': 'fdsaier8473619djfshf55fdafd', # too many characters
+                # too many characters
+                'sample_id': 'fdsaier8473619djfshf55fdafd',
             },
             pytest.raises(ValidationError),
             'String does not match expected pattern.'
         ),
         (
             {
-                'lab_id': 'fdsa#$%8%73619djfshf', # illegal characters
+                # illegal characters
+                'lab_id': 'fdsa#$%8%73619djfshf',
             },
             pytest.raises(ValidationError),
             'String does not match expected pattern.'

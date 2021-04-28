@@ -466,13 +466,13 @@ class WaterSampleSchema(Schema):
     @validates('sample_collect_date')
     def validate_sample_collect_date(self, value):
         tomorrow = datetime.date.today() + datetime.timedelta(hours=24)
-        
+
         if value > tomorrow:
             raise ValidationError(
                 "'sample_collect_date' cannot be after "
                 "tomorrow's date."
             )
-    
+
     sample_collect_time = fields.Time(
         required=True
     )
@@ -484,7 +484,7 @@ class WaterSampleSchema(Schema):
     @validates('time_zone')
     def validate_time_zone(self, value):
         # TODO: case sensitive or no?
-        regex = re.compile('utc-(\d{2}):(\d{2})')
+        regex = re.compile('utc-(\\d{2}):(\\d{2})')
 
         if value and not regex.match(value):
             raise ValidationError(
@@ -532,7 +532,7 @@ class WaterSampleSchema(Schema):
     )
     lab_id = fields.String(
         required=True,
-        validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$') # duplicate from above
+        validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$')
     )
 
     test_result_date = None
