@@ -323,3 +323,14 @@ other_norm_name = [
     'sucralose',
     'ibuprofen'
 ]
+
+quant_stan_type = [
+    'dna',
+    'rna'
+]
+
+yes_no_not_tested = [
+    'yes',
+    'no',
+    'not tested'
+]

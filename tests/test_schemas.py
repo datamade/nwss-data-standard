@@ -1433,3 +1433,123 @@ def test_other_norm_conc(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'quant_stan_type': 'dna'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'quant_stan_type': 'rna'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'quant_stan_type': 'd'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'quant_stan_type': 'r'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_quant_stan_type(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'inhibition_detect': 'yes',
+                'inhibition_adjust': 'yes',
+                'inhibition_method': 'our method we used'
+
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'inhibition_detect': 'no',
+                'inhibition_adjust': 'no',
+                'inhibition_method': 'sciencejournal.com'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'inhibition_detect': 'not tested',
+                'inhibition_adjust': '',
+                'inhibition_method': 'none'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'inhibition_detect': 'not tested',
+                'inhibition_adjust': 'no',
+                'inhibition_method': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            "'inhibition_method' must be 'none' "
+            "if inhibition_detect == 'not tested'."
+        ),
+        (
+            {
+                'inhibition_detect': 'n',
+                'inhibition_adjust': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'inhibition_detect': 'y',
+                'inhibition_adjust': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        ),
+        (
+            {
+                'inhibition_detect': 'n/a',
+                'inhibition_adjust': 'n/a'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
+        )
+    ]
+)
+def test_inhibition_detect(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

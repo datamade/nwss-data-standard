@@ -1,3 +1,4 @@
+import re
 from marshmallow import Schema, fields, \
     validate, ValidationError, validates_schema
 from marshmallow.decorators import pre_load
@@ -412,3 +413,44 @@ class WaterSampleSchema(Schema):
                 'other_norm_name cannot be null.'
            )
 
+    quant_stan_type = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.quant_stan_type)
+    )
+
+    stan_ref = fields.String(
+        required=True
+    )
+    
+
+    inhibition_detect = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.yes_no_not_tested)
+    )
+
+    inhibition_adjust = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )
+
+    inhibition_method = fields.String(
+        required=True
+    )
+
+    # TODO: refine this? ...this one is confusing me rn.
+    @validates_schema
+    def validate_inhibition_detect(self, data, **kwargs):
+        if data['inhibition_detect'] == 'yes' \
+           and not data['inhibition_adjust']:
+            raise ValidationError(
+                "If 'inhibition_detect' is yes, "
+                "then 'inhibition_adjust' must have "
+                "a non-empty value."
+            )
+
+        if data['inhibition_detect'] == 'not tested' \
+           and data['inhibition_method'] != 'none':
+            raise ValidationError(
+                "'inhibition_method' must be 'none' "
+                "if inhibition_detect == 'not tested'."
+            )
