@@ -1759,3 +1759,107 @@ def test_sample_and_lab_id(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'test_result_date': '2021-04-28'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'test_result_date': get_future_date(24).strftime('%Y-%m-%d')
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'test_result_date': get_future_date(48).strftime('%Y-%m-%d')
+            },
+            pytest.raises(ValidationError),
+            "'test_result_date' cannot be after "
+            "tomorrow's date."
+        ),
+        (
+            {
+                'test_result_date': '2021-04-25',
+                'sample_collect_date': '2021-04-29'
+            },
+            pytest.raises(ValidationError),
+            "'test_result_date' cannot be "
+            "before 'test_result_date'."
+        ),
+        (
+            {
+                'test_result_date': '04/15/2021'
+            },
+            pytest.raises(ValidationError),
+            'Not a valid date'
+        ),
+        (
+            {
+                'test_result_date': ''
+            },
+            pytest.raises(ValidationError),
+            'Field may not be null.'
+        )
+    ]
+)
+def test_result_date(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sars_cov2_std_error': None,
+                'sars_cov2_cl_95_lo': 12,
+                'sars_cov2_cl_95_up': 12
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_std_error': 0.09214,
+                'sars_cov2_cl_95_lo': None,
+                'sars_cov2_cl_95_up': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_std_error': 0.09214,
+                'sars_cov2_cl_95_lo': 123984,
+                'sars_cov2_cl_95_up': 4450494
+            },
+            pytest.raises(ValidationError),
+            "If 'sars_cov2_std_error' has a non-empty value "
+            "then 'sars_cov2_cl_95_lo' and "
+            "'sars_cov2_cl_95_up' must be empty."
+        )
+    ]
+)
+def test_sars_cov2_err_validation(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)

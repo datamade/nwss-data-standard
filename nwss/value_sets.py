@@ -341,3 +341,8 @@ num_no_target_control = [
     '3',
     'more than 3'
 ]
+
+yes_no = [
+    'yes',
+    'no'
+]

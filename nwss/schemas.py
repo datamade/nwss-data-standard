@@ -541,16 +541,91 @@ class Sample():
 
 
 class QuantificationResults():
-    test_result_date = None
-    sars_cov2_units = None
-    sars_cov2_avg_conc = None
-    sars_cov2_std_error = None
-    sars_cov2_cl_95_lo = None
-    sars_cov2_cl_95_up = None
-    sars_cov2_below_lod = None
-    lod_sewage = None
-    ntc_amplify = None
-    quality_flag = None
+    test_result_date = fields.Date(
+        required=True
+    )
+
+    @validates_schema
+    def validate_test_result_date(self, data, **kwargs):
+        tomorrow = get_future_date(24)
+
+        result_date = data['test_result_date']
+
+        if result_date > tomorrow:
+            raise ValidationError(
+                "'test_result_date' cannot be after "
+                "tomorrow's date."
+            )
+
+        if data['sample_collect_date'] > result_date:
+            raise ValidationError(
+                "'test_result_date' cannot be "
+                "before 'test_result_date'."
+            )
+
+    sars_cov2_units = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.mic_chem_units)
+    )
+
+    # TODO: come back to figure out custom error message,
+    # because it currently returns: "Invalid input." and
+    # I can't get the custom error message to display.
+    sars_cov2_avg_conc = fields.Float(
+        required=True,
+        metadata={'Units': 'specified in sars_cov2_units'}
+    )
+
+    sars_cov2_std_error = fields.Float(
+        allow_none=True,
+        validate=validate.Range(min=-1),
+        metadata={'Units': 'specified in sars_cov2_units'}
+    )
+
+    sars_cov2_cl_95_lo = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'specified in sars_cov2_units'}
+    )
+
+    sars_cov2_cl_95_up = fields.Float(
+        allow_none=True,
+        metadata={'Units': 'specified in sars_cov2_units'}
+    )
+
+    @validates_schema
+    def validate_sars_cov2(self, data, **kwargs):
+        fields = [
+            'sars_cov2_std_error',
+            'sars_cov2_cl_95_lo',
+            'sars_cov2_cl_95_up'
+        ]
+        
+        if all(data.get(field) for field in fields):
+            raise ValidationError(
+                   "If 'sars_cov2_std_error' has a non-empty value then "
+                   "'sars_cov2_cl_95_lo' and 'sars_cov2_cl_95_up' "
+                   "must be empty."
+               )
+
+    ntc_amplify = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.yes_no)
+    )
+
+    sars_cov2_below_lod = fields.String(
+        required=True,
+        validate=validate.OneOf(value_sets.yes_no)
+    )
+
+    lod_sewage = fields.Float(
+        required=True,
+        metadata={'Units': 'specified in sars_cov2_units'}
+    )
+    
+    quality_flag = fields.String(
+        allow_none=True,
+        validate=validate.OneOf(value_sets.yes_no_empty)
+    )
 
 
 class WaterSampleSchema(
