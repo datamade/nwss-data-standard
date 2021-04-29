@@ -1,7 +1,8 @@
 from contextlib import contextmanager
 from marshmallow import ValidationError
 import pytest
-import datetime
+
+from nwss.utils import get_future_date
 
 
 def test_valid_data(schema, valid_data):
@@ -24,10 +25,10 @@ def update_data(input, valid_data):
     return [data]
 
 
-def get_future_date(hours):
-    future_date = (datetime.date.today() +
-                   datetime.timedelta(hours=hours))
-    return future_date.strftime('%Y-%m-%d')
+# def get_future_date(hours):
+#     future_date = (datetime.date.today() +
+#                    datetime.timedelta(hours=hours))
+#     return future_date.strftime('%Y-%m-%d')
 
 
 @pytest.mark.parametrize(
@@ -1616,14 +1617,14 @@ def test_num_no_target_control(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'sample_collect_date': get_future_date(24)
+                'sample_collect_date': get_future_date(24).strftime('%Y-%m-%d')
             },
             does_not_raise(),
             None
         ),
         (
             {
-                'sample_collect_date': get_future_date(48)
+                'sample_collect_date': get_future_date(48).strftime('%Y-%m-%d')
             },
             pytest.raises(ValidationError),
             "'sample_collect_date' cannot be after "

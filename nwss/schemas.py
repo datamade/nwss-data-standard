@@ -1,10 +1,10 @@
-import datetime
 import re
 from marshmallow import Schema, fields, \
     validate, ValidationError, validates_schema, validates
 from marshmallow.decorators import pre_load
 
 from nwss import value_sets, fields as nwss_fields
+from nwss.utils import get_future_date
 
 
 class CollectionSite():
@@ -468,7 +468,7 @@ class Sample():
 
     @validates('sample_collect_date')
     def validate_sample_collect_date(self, value):
-        tomorrow = datetime.date.today() + datetime.timedelta(hours=24)
+        tomorrow = get_future_date(24)
 
         if value > tomorrow:
             raise ValidationError(
@@ -540,22 +540,7 @@ class Sample():
     )
 
 
-class WaterSampleSchema(
-        CollectionSite,
-        WWTP,
-        CollectionMethod,
-        ProcessingMethod,
-        QuantificationMethod,
-        Sample,
-        Schema):
-
-    @pre_load
-    def cast_to_none(self, raw_data, **kwargs):
-        """Cast empty strings to None to provide for the use of
-        the allow_none flag by optional numeric fields.
-        """
-        return {k: v if v != '' else None for k, v in raw_data.items()}
-
+class QuantificationResults():
     test_result_date = None
     sars_cov2_units = None
     sars_cov2_avg_conc = None
@@ -566,3 +551,21 @@ class WaterSampleSchema(
     lod_sewage = None
     ntc_amplify = None
     quality_flag = None
+
+
+class WaterSampleSchema(
+        CollectionSite,
+        WWTP,
+        CollectionMethod,
+        ProcessingMethod,
+        QuantificationMethod,
+        Sample,
+        QuantificationResults,
+        Schema):
+
+    @pre_load
+    def cast_to_none(self, raw_data, **kwargs):
+        """Cast empty strings to None to provide for the use of
+        the allow_none flag by optional numeric fields.
+        """
+        return {k: v if v != '' else None for k, v in raw_data.items()}
