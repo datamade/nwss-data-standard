@@ -599,7 +599,7 @@ class QuantificationResults():
             'sars_cov2_cl_95_lo',
             'sars_cov2_cl_95_up'
         ]
-        
+
         if all(data.get(field) for field in fields):
             raise ValidationError(
                    "If 'sars_cov2_std_error' has a non-empty value then "
@@ -621,7 +621,7 @@ class QuantificationResults():
         required=True,
         metadata={'Units': 'specified in sars_cov2_units'}
     )
-    
+
     quality_flag = fields.String(
         allow_none=True,
         validate=validate.OneOf(value_sets.yes_no_empty)
