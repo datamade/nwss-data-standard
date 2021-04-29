@@ -7,7 +7,7 @@ from marshmallow.decorators import pre_load
 from nwss import value_sets, fields as nwss_fields
 
 
-class CollectionSite(Schema):
+class CollectionSite():
     reporting_jurisdiction = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.reporting_jurisdiction)
@@ -61,7 +61,7 @@ class CollectionSite(Schema):
     )
 
 
-class WWTP(Schema):
+class WWTP():
     epaid = fields.String(
         allow_none=True,
         validate=validate.Regexp('^([a-zA-Z]{2})(\\d{7})$')
@@ -100,7 +100,7 @@ class WWTP(Schema):
     )
 
 
-class CollectionMethod(Schema):
+class CollectionMethod():
     sample_type = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.sample_type)
@@ -150,7 +150,7 @@ class CollectionMethod(Schema):
             )
 
 
-class ProcessingMethod(Schema):
+class ProcessingMethod():
     solids_separation = fields.String(
         allow_none=True,
         validate=validate.OneOf(value_sets.solids_separation)
@@ -276,7 +276,7 @@ class ProcessingMethod(Schema):
     )
 
 
-class QuantificationMethod(Schema):
+class QuantificationMethod():
     pcr_target = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.pcr_target)
@@ -461,7 +461,7 @@ class QuantificationMethod(Schema):
     )
 
 
-class Sample(Schema):
+class Sample():
     sample_collect_date = fields.Date(
         required=True
     )
@@ -546,7 +546,8 @@ class WaterSampleSchema(
         CollectionMethod,
         ProcessingMethod,
         QuantificationMethod,
-        Sample):
+        Sample,
+        Schema):
 
     @pre_load
     def cast_to_none(self, raw_data, **kwargs):
