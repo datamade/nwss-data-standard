@@ -149,8 +149,7 @@ wwtp_jurisdictions = [
 
 yes_no_empty = [
     'yes',
-    'no',
-    None
+    'no'
 ]
 
 sample_type = [
