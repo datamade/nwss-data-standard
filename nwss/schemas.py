@@ -7,14 +7,7 @@ from marshmallow.decorators import pre_load
 from nwss import value_sets, fields as nwss_fields
 
 
-class WaterSampleSchema(Schema):
-    @pre_load
-    def cast_to_none(self, raw_data, **kwargs):
-        """Cast empty strings to None to provide for the use of
-        the allow_none flag by optional numeric fields.
-        """
-        return {k: v if v != '' else None for k, v in raw_data.items()}
-
+class CollectionSite(Schema):
     reporting_jurisdiction = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.reporting_jurisdiction)
@@ -67,6 +60,8 @@ class WaterSampleSchema(Schema):
         validate=validate.OneOf(value_sets.institution_type)
     )
 
+
+class WWTP(Schema):
     epaid = fields.String(
         allow_none=True,
         validate=validate.Regexp('^([a-zA-Z]{2})(\\d{7})$')
@@ -104,6 +99,8 @@ class WaterSampleSchema(Schema):
         validate=validate.OneOf(value_sets.yes_no_empty)
     )
 
+
+class CollectionMethod(Schema):
     sample_type = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.sample_type)
@@ -152,6 +149,8 @@ class WaterSampleSchema(Schema):
                 'the chemicals used.'
             )
 
+
+class ProcessingMethod(Schema):
     solids_separation = fields.String(
         allow_none=True,
         validate=validate.OneOf(value_sets.solids_separation)
@@ -276,6 +275,8 @@ class WaterSampleSchema(Schema):
         validate=validate.OneOf(value_sets.yes_no_empty)
     )
 
+
+class QuantificationMethod(Schema):
     pcr_target = fields.String(
         required=True,
         validate=validate.OneOf(value_sets.pcr_target)
@@ -459,6 +460,8 @@ class WaterSampleSchema(Schema):
         validate=validate.OneOf(value_sets.num_no_target_control)
     )
 
+
+class Sample(Schema):
     sample_collect_date = fields.Date(
         required=True
     )
@@ -530,10 +533,27 @@ class WaterSampleSchema(Schema):
         required=True,
         validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$')
     )
+
     lab_id = fields.String(
         required=True,
         validate=validate.Regexp('^[a-zA-Z0-9-_]{1,20}$')
     )
+
+
+class WaterSampleSchema(
+        CollectionSite,
+        WWTP,
+        CollectionMethod,
+        ProcessingMethod,
+        QuantificationMethod,
+        Sample):
+
+    @pre_load
+    def cast_to_none(self, raw_data, **kwargs):
+        """Cast empty strings to None to provide for the use of
+        the allow_none flag by optional numeric fields.
+        """
+        return {k: v if v != '' else None for k, v in raw_data.items()}
 
     test_result_date = None
     sars_cov2_units = None
