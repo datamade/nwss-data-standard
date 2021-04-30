@@ -1617,7 +1617,8 @@ def test_num_no_target_control(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'sample_collect_date': get_future_date(24).strftime('%Y-%m-%d')
+                'sample_collect_date': get_future_date(0).strftime('%Y-%m-%d'),
+                'test_result_date': get_future_date(24).strftime('%Y-%m-%d')
             },
             does_not_raise(),
             None
@@ -1793,7 +1794,7 @@ def test_sample_and_lab_id(schema, valid_data, input, expect, error):
             },
             pytest.raises(ValidationError),
             "'test_result_date' cannot be "
-            "before 'test_result_date'."
+            "before 'sample_collect_date'."
         ),
         (
             {
