@@ -1729,6 +1729,45 @@ def test_time_zone(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
+        
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sample_matrix': 'post grit removal',
+                'flow_rate': 41353200
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'primary sludge',
+                'flow_rate': None
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'raw wastewater',
+                'flow_rate': None
+            },
+            pytest.raises(ValidationError),
+            "If 'sample_matrix' is liquid sampled from flowing source "
+        )
+    ]
+)
+def test_flow_rate(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
 
 
 @pytest.mark.parametrize(
