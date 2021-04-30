@@ -273,10 +273,10 @@ concentration_method = [
     'separated solids',
     'membrane filtration with sample acidification, membrane recombined with '
     'separated solids',
-    'membrane filtration with acidification and mgcl2, membrane recombined with '
-    'separated solids',
-    'membrane filtration with no amendment, membrane recombined with separated '
-    'solids',
+    'membrane filtration with acidification and mgcl2, '
+    'membrane recombined with separated solids',
+    'membrane filtration with no amendment,'
+    'membrane recombined with separated solids',
     'peg precipitation',
     'ultracentrifugation',
     'skimmed milk flocculation',

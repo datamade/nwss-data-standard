@@ -508,14 +508,13 @@ class Sample():
             'primary effluent',
             'secondary effluent'
         ]
-        
+
         if data['sample_matrix'] in sample_matrix_required \
            and not data['flow_rate']:
             required = ','.join(sample_matrix_required)
             raise ValidationError(
-                "If 'sample_matrix' is liquid sampled from flowing source " 
-                f"({required}), then 'flow_rate' must have a non-empty value "
-                "(i.e., sludge samples are permitted empty values for this field)"
+                "If 'sample_matrix' is liquid sampled from flowing source "
+                f"({required}), then 'flow_rate' must have a non-empty value."
             )
 
     ph = fields.Float(
