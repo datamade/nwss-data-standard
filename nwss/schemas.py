@@ -560,7 +560,7 @@ class QuantificationResults():
         if data['sample_collect_date'] > result_date:
             raise ValidationError(
                 "'test_result_date' cannot be "
-                "before 'test_result_date'."
+                "before 'sample_collect_date'."
             )
 
     sars_cov2_units = fields.String(
