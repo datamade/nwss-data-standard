@@ -769,6 +769,15 @@ def test_solids_separation(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'concentration_method': 'membrane filtration with '
+                'sample acidification, membrane recombined with '
+                'separated solids'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'concentration_method': 'centricon ultrafiltration'
             },
             does_not_raise(),
@@ -1091,6 +1100,13 @@ def test_rec_eff_spike_matrix(schema, valid_data, input, expect, error):
         (
             {
                 'pcr_target': 'rdrp gene / ncov_ip4'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_target': 'n1 and n2 combined'
             },
             does_not_raise(),
             None
