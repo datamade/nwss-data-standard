@@ -593,7 +593,7 @@ def test_sample_matrix(schema, valid_data, input, expect, error):
     [
         (
             {
-                'pretreatment': 'yes'
+                'pretreatment': 'YES'
             },
             does_not_raise(),
             None

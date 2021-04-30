@@ -61,6 +61,18 @@ class CollectionSite():
     )
 
 
+class OneOfUpperCase(validate.OneOf):
+
+    def __call__(self, value):
+        v = value.upper().strip()
+        return super().__call__(v)
+
+class OneOfLowerCase(validate.OneOf):
+    def __call__(self, value):
+        v = value.lower().strip()
+        return super().__call__(v)
+
+
 class WWTP():
     epaid = fields.String(
         allow_none=True,
@@ -74,7 +86,7 @@ class WWTP():
 
     wwtp_jurisdiction = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.wwtp_jurisdictions)
+        validate=OneOfUpperCase(value_sets.wwtp_jurisdictions)
     )
 
     capacity_mgd = fields.Float(
@@ -133,7 +145,7 @@ class CollectionMethod():
 
     pretreatment = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=OneOfLowerCase(value_sets.yes_no_empty)
     )
 
     pretreatment_specify = fields.String(
