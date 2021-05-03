@@ -67,6 +67,7 @@ class OneOfUpperCase(validate.OneOf):
         v = value.upper().strip()
         return super().__call__(v)
 
+
 class OneOfLowerCase(validate.OneOf):
     def __call__(self, value):
         v = value.lower().strip()

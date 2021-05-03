@@ -1729,7 +1729,7 @@ def test_time_zone(schema, valid_data, input, expect, error):
 
     if e:
         assert error in str(e.value)
-        
+
 
 @pytest.mark.parametrize(
     'input,expect,error',
