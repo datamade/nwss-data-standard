@@ -448,7 +448,6 @@ class QuantificationMethod():
         required=True
     )
 
-    # TODO: refine this? ...this one is confusing me rn.
     @validates_schema
     def validate_inhibition_detect(self, data, **kwargs):
         if data['inhibition_detect'] == 'yes' \
@@ -595,9 +594,6 @@ class QuantificationResults():
         validate=CaseInsensitiveOneOf(value_sets.mic_chem_units)
     )
 
-    # TODO: come back to figure out custom error message,
-    # because it currently returns: "Invalid input." and
-    # I can't get the custom error message to display.
     sars_cov2_avg_conc = fields.Float(
         required=True,
         metadata={'Units': 'specified in sars_cov2_units'}
