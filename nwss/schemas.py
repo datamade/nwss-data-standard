@@ -7,10 +7,21 @@ from nwss import value_sets, fields as nwss_fields
 from nwss.utils import get_future_date
 
 
+class CaseInsensitiveOneOf(validate.OneOf):
+    def __call__(self, value) -> str:
+        try:
+            if not any(value.casefold() == v.casefold() for v in self.choices):
+                raise ValidationError(self._format_error(value))
+        except TypeError as error:
+            raise ValidationError(self._format_error(value)) from error
+
+        return value
+
+
 class CollectionSite():
     reporting_jurisdiction = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.reporting_jurisdiction)
+        validate=CaseInsensitiveOneOf(value_sets.reporting_jurisdiction)
     )
 
     county_names = nwss_fields.ListString(missing=None)
@@ -40,7 +51,7 @@ class CollectionSite():
 
     sample_location = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.sample_location)
+        validate=CaseInsensitiveOneOf(value_sets.sample_location)
     )
 
     sample_location_specify = fields.Str(
@@ -57,7 +68,7 @@ class CollectionSite():
 
     institution_type = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.institution_type)
+        validate=CaseInsensitiveOneOf(value_sets.institution_type)
     )
 
 
@@ -74,7 +85,7 @@ class WWTP():
 
     wwtp_jurisdiction = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.wwtp_jurisdictions)
+        validate=CaseInsensitiveOneOf(value_sets.wwtp_jurisdictions)
     )
 
     capacity_mgd = fields.Float(
@@ -91,19 +102,19 @@ class WWTP():
 
     stormwater_input = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
     influent_equilibrated = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
 
 class CollectionMethod():
     sample_type = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.sample_type)
+        validate=CaseInsensitiveOneOf(value_sets.sample_type)
     )
 
     composite_freq = fields.Float(
@@ -117,7 +128,7 @@ class CollectionMethod():
 
     sample_matrix = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.sample_matrix)
+        validate=CaseInsensitiveOneOf(value_sets.sample_matrix)
     )
 
     collection_storage_time = fields.Float(
@@ -133,7 +144,7 @@ class CollectionMethod():
 
     pretreatment = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
     pretreatment_specify = fields.String(
@@ -153,17 +164,17 @@ class CollectionMethod():
 class ProcessingMethod():
     solids_separation = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.solids_separation)
+        validate=CaseInsensitiveOneOf(value_sets.solids_separation)
     )
 
     concentration_method = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.concentration_method)
+        validate=CaseInsensitiveOneOf(value_sets.concentration_method)
     )
 
     extraction_method = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.extraction_method)
+        validate=CaseInsensitiveOneOf(value_sets.extraction_method)
     )
 
     pre_conc_storage_time = fields.Float(
@@ -196,7 +207,7 @@ class ProcessingMethod():
 
     ext_blank = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
     rec_eff_percent = fields.Float(
@@ -207,7 +218,7 @@ class ProcessingMethod():
 
     rec_eff_target_name = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.rec_eff_target_name)
+        validate=CaseInsensitiveOneOf(value_sets.rec_eff_target_name)
     )
 
     @validates_schema
@@ -238,7 +249,7 @@ class ProcessingMethod():
 
     rec_eff_spike_matrix = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.rec_eff_spike_matrix)
+        validate=CaseInsensitiveOneOf(value_sets.rec_eff_spike_matrix)
     )
 
     @validates_schema
@@ -272,14 +283,14 @@ class ProcessingMethod():
 
     pasteurized = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
 
 class QuantificationMethod():
     pcr_target = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.pcr_target)
+        validate=CaseInsensitiveOneOf(value_sets.pcr_target)
     )
 
     pcr_target_ref = fields.String(
@@ -288,7 +299,7 @@ class QuantificationMethod():
 
     pcr_type = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.pcr_type)
+        validate=CaseInsensitiveOneOf(value_sets.pcr_type)
     )
 
     lod_ref = fields.String(
@@ -302,12 +313,12 @@ class QuantificationMethod():
 
     hum_frac_mic_unit = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.mic_units)
+        validate=CaseInsensitiveOneOf(value_sets.mic_units)
     )
 
     hum_frac_target_mic = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.hum_frac_target_mic)
+        validate=CaseInsensitiveOneOf(value_sets.hum_frac_target_mic)
     )
 
     hum_frac_target_mic_ref = fields.String(
@@ -343,12 +354,12 @@ class QuantificationMethod():
 
     hum_frac_chem_unit = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.chem_units)
+        validate=CaseInsensitiveOneOf(value_sets.chem_units)
     )
 
     hum_frac_target_chem = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.hum_frac_target_chem)
+        validate=CaseInsensitiveOneOf(value_sets.hum_frac_target_chem)
     )
 
     hum_frac_target_chem_ref = fields.String(
@@ -382,12 +393,12 @@ class QuantificationMethod():
 
     other_norm_name = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.other_norm_name)
+        validate=CaseInsensitiveOneOf(value_sets.other_norm_name)
     )
 
     other_norm_unit = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.mic_chem_units)
+        validate=CaseInsensitiveOneOf(value_sets.mic_chem_units)
     )
 
     other_norm_ref = fields.String(
@@ -416,7 +427,7 @@ class QuantificationMethod():
 
     quant_stan_type = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.quant_stan_type)
+        validate=CaseInsensitiveOneOf(value_sets.quant_stan_type)
     )
 
     stan_ref = fields.String(
@@ -425,12 +436,12 @@ class QuantificationMethod():
 
     inhibition_detect = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.yes_no_not_tested)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_not_tested)
     )
 
     inhibition_adjust = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
     inhibition_method = fields.String(
@@ -457,7 +468,7 @@ class QuantificationMethod():
 
     num_no_target_control = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.num_no_target_control)
+        validate=CaseInsensitiveOneOf(value_sets.num_no_target_control)
     )
 
 
@@ -486,8 +497,7 @@ class Sample():
 
     @validates('time_zone')
     def validate_time_zone(self, value):
-        # TODO: case sensitive or no?
-        regex = re.compile('utc-(\\d{2}):(\\d{2})')
+        regex = re.compile('utc-(\\d{2}):(\\d{2})', re.IGNORECASE)
 
         if value and not regex.match(value):
             raise ValidationError(
@@ -582,7 +592,7 @@ class QuantificationResults():
 
     sars_cov2_units = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.mic_chem_units)
+        validate=CaseInsensitiveOneOf(value_sets.mic_chem_units)
     )
 
     # TODO: come back to figure out custom error message,
@@ -626,12 +636,12 @@ class QuantificationResults():
 
     ntc_amplify = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.yes_no)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no)
     )
 
     sars_cov2_below_lod = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.yes_no)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no)
     )
 
     lod_sewage = fields.Float(
@@ -641,7 +651,7 @@ class QuantificationResults():
 
     quality_flag = fields.String(
         allow_none=True,
-        validate=validate.OneOf(value_sets.yes_no_empty)
+        validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)
     )
 
 

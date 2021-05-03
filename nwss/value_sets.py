@@ -260,8 +260,7 @@ sample_matrix = [
 solids_separation = [
     'filtration',
     'centriguation',
-    'none',
-    None
+    'none'
 ]
 
 concentration_method = [
@@ -313,8 +312,7 @@ rec_eff_target_name = [
     'phi6',
     'puro',
     'ms2 coliphage',
-    'hep g armored rna',
-    None
+    'hep g armored rna'
 ]
 
 rec_eff_spike_matrix = [
