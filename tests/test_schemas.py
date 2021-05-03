@@ -43,6 +43,13 @@ def update_data(input, valid_data):
         ),
         (
             {
+                'reporting_jurisdiction': 'ca'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'reporting_jurisdiction': 'IL'
             },
             does_not_raise(),
@@ -139,6 +146,14 @@ def test_county_jurisdiction(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'sample_location': 'WWTP',  # case insensitive
+                'sample_location_specify': ''
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'sample_location': 'wwtp',
                 'sample_location_specify': 'details'
             },
@@ -202,6 +217,13 @@ def test_sample_location_valid(schema, valid_data, input, expect, error):
         (
             {
                 'institution_type': 'child day care'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'institution_type': 'CHILD DAY CARE'
             },
             does_not_raise(),
             None
@@ -372,6 +394,13 @@ def test_wwtp_jurisdictions(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'stormwater_input': 'YES'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'stormwater_input': 'no'
             },
             does_not_raise(),
@@ -423,6 +452,13 @@ def test_stormwater_input(schema, valid_data, input, expect, error):
         (
             {
                 'influent_equilibrated': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'influent_equilibrated': 'YES'
             },
             does_not_raise(),
             None
@@ -500,6 +536,13 @@ def test_influent_equilibrated(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'sample_type': 'GRAB'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'sample_type': 'y'
             },
             pytest.raises(ValidationError),
@@ -551,6 +594,13 @@ def test_sample_type(schema, valid_data, input, expect, error):
         (
             {
                 'sample_matrix': 'holding tank'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sample_matrix': 'HOLDING TANK'
             },
             does_not_raise(),
             None
@@ -711,6 +761,13 @@ def test_pretreatment_specify(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'solids_separation': 'CENTRIGUATION'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'solids_separation': 'none'
             },
             does_not_raise(),
@@ -733,13 +790,6 @@ def test_pretreatment_specify(schema, valid_data, input, expect, error):
         (
             {
                 'solids_separation': 'centrig'
-            },
-            pytest.raises(ValidationError),
-            'Must be one of:'
-        ),
-        (
-            {
-                'solids_separation': 'NONE'
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -792,6 +842,13 @@ def test_solids_separation(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'concentration_method': 'ULTRACENTRIFUGATION'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'concentration_method': 'promega wastewater '
                 'large volume tna capture kit'
             },
@@ -808,13 +865,6 @@ def test_solids_separation(schema, valid_data, input, expect, error):
         (
             {
                 'concentration_method': 'centrifugation'
-            },
-            pytest.raises(ValidationError),
-            'Must be one of:'
-        ),
-        (
-            {
-                'concentration_method': 'NONE'
             },
             pytest.raises(ValidationError),
             'Must be one of:'
@@ -851,6 +901,13 @@ def test_concentration_method(schema, valid_data, input, expect, error):
         (
             {
                 'extraction_method': 'qiagen rneasy kit'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'extraction_method': 'QIAGEN RNEASY KIT'
             },
             does_not_raise(),
             None
@@ -915,6 +972,13 @@ def test_extraction_method(schema, valid_data, input, expect, error):
         (
             {
                 'ext_blank': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ext_blank': 'YES'
             },
             does_not_raise(),
             None
@@ -987,6 +1051,14 @@ def test_ext_blank(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'rec_eff_percent': 52,
+                'rec_eff_target_name': 'OC43'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'rec_eff_percent': -1,
                 'rec_eff_target_name': ''
             },
@@ -1043,6 +1115,15 @@ def test_eff_percent_target_name(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'rec_eff_percent': 22,
+                'rec_eff_target_name': 'OC43',
+                'rec_eff_spike_matrix': 'RAW SAMPLE POST PASTEURIZATION'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'rec_eff_percent': -1,
                 'rec_eff_target_name': '',
                 'rec_eff_spike_matrix': ''
@@ -1086,6 +1167,13 @@ def test_rec_eff_spike_matrix(schema, valid_data, input, expect, error):
         (
             {
                 'pcr_target': 'e_sarbeco'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'pcr_target': 'E_SARBECO'
             },
             does_not_raise(),
             None
@@ -1156,6 +1244,13 @@ def test_pcr_target(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'pcr_type': 'QPCR'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'pcr_type': 'fluidigm dpcr'
             },
             does_not_raise(),
@@ -1219,6 +1314,15 @@ def test_pcr_type(schema, valid_data, input, expect, error):
                 'hum_frac_mic_conc': 0.9987,
                 'hum_frac_mic_unit': 'copies/g wet sludge',
                 'hum_frac_target_mic': 'crassphage'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_mic_conc': 0.9987,
+                'hum_frac_mic_unit': 'COPIES/G WET SLUDGE',
+                'hum_frac_target_mic': 'CRASSPHAGE'
             },
             does_not_raise(),
             None
@@ -1305,6 +1409,16 @@ def test_hum_frac_mic_conc(schema, valid_data, input, expect, error):
                 'hum_frac_chem_conc': 1.02,
                 'hum_frac_chem_unit': 'micrograms/g dry sludge',
                 'hum_frac_target_chem': 'caffeine',
+                'hum_frac_target_chem_ref': 'chem-conc-info.com'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'hum_frac_chem_conc': 1.02,
+                'hum_frac_chem_unit': 'MICROGRAMS/G DRY SLUDGE',
+                'hum_frac_target_chem': 'CAFFEINE',
                 'hum_frac_target_chem_ref': 'chem-conc-info.com'
             },
             does_not_raise(),
@@ -1404,6 +1518,16 @@ def test_hum_frac_chem_conc(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'other_norm_conc': 33.07,
+                'other_norm_name': 'CAFFEINE',
+                'other_norm_unit': 'MICROGRAMS/L WASTEWATER',
+                'other_norm_ref': 'norm conc resource'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'other_norm_conc': 22.021,
                 'other_norm_unit': None  # test for this field
             },
@@ -1477,6 +1601,13 @@ def test_other_norm_conc(schema, valid_data, input, expect, error):
         ),
         (
             {
+                'quant_stan_type': 'RNA'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
                 'quant_stan_type': 'd'
             },
             pytest.raises(ValidationError),
@@ -1527,6 +1658,15 @@ def test_quant_stan_type(schema, valid_data, input, expect, error):
             {
                 'inhibition_detect': 'not tested',
                 'inhibition_adjust': '',
+                'inhibition_method': 'none'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'inhibition_detect': 'NOT TESTED',
+                'inhibition_adjust': 'NO',
                 'inhibition_method': 'none'
             },
             does_not_raise(),
@@ -1591,6 +1731,13 @@ def test_inhibition_detect(schema, valid_data, input, expect, error):
         (
             {
                 'num_no_target_control': 'more than 3'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'num_no_target_control': 'MORE THAN 3'
             },
             does_not_raise(),
             None
@@ -1701,6 +1848,13 @@ def test_sample_collect_time(schema, valid_data, input, expect, error):
         (
             {
                 'time_zone': 'utc-08:00'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'time_zone': 'UTC-08:00'
             },
             does_not_raise(),
             None
@@ -1882,6 +2036,42 @@ def test_result_date(schema, valid_data, input, expect, error):
     [
         (
             {
+                'sars_cov2_units': 'copies/L wastewater'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_units': 'COPIES/L WASTEWATER'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_units': 'copies wastewater'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of: '
+        )
+    ]
+)
+def test_sars_cov2_units(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
                 'sars_cov2_std_error': None,
                 'sars_cov2_cl_95_lo': 12,
                 'sars_cov2_cl_95_up': 12
@@ -1912,6 +2102,114 @@ def test_result_date(schema, valid_data, input, expect, error):
     ]
 )
 def test_sars_cov2_err_validation(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'ntc_amplify': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ntc_amplify': 'NO'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'ntc_amplify': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of: '
+        )
+    ]
+)
+def test_ntc_amplify(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'sars_cov2_below_lod': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_below_lod': 'NO'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'sars_cov2_below_lod': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of: '
+        )
+    ]
+)
+def test_sars_cov2_below_lod(schema, valid_data, input, expect, error):
+    data = update_data(input, valid_data)
+
+    with expect as e:
+        schema.load(data)
+
+    if e:
+        assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    'input,expect,error',
+    [
+        (
+            {
+                'quality_flag': 'yes'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'quality_flag': 'NO'
+            },
+            does_not_raise(),
+            None
+        ),
+        (
+            {
+                'quality_flag': 'n'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of: '
+        )
+    ]
+)
+def test_quality_flag(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:
