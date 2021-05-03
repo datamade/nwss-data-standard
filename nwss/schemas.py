@@ -10,8 +10,7 @@ from nwss.utils import get_future_date
 class CaseInsensitiveOneOf(validate.OneOf):
     def __call__(self, value) -> str:
         try:
-            if not any([value.casefold() == v.casefold()
-               for v in self.choices]):
+            if not any(value.casefold() == v.casefold() for v in self.choices):
                 raise ValidationError(self._format_error(value))
         except TypeError as error:
             raise ValidationError(self._format_error(value)) from error
