@@ -235,10 +235,10 @@ class ProcessingMethod():
             )
 
         # TODO:
-        # This isn't explicitly said in the docs, but one could 
-        # reason that a rec_eff_percent of -1 would require that 
-        # all of the rec_eff_* fields be empty. 
-        # So, should we validate that those fields are empty or leave them alone?
+        # This isn't explicitly said in the docs, but one could
+        # reason that a rec_eff_percent of -1 would require that
+        # all of the rec_eff_* fields be empty.
+        # Should we validate that those fields are empty or leave them alone?
         # If we validate, then we'd need to do the same for
         # rec_eff_spike_matrix and rec_eff_spike_conc.
         if data['rec_eff_percent'] == -1 \
