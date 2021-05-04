@@ -8,4 +8,4 @@ json_schema = JSONSchema()
 s = json_schema.dump(schema)
 
 with open('schema.json', 'w') as f:
-    json.dump(s, f)
+    json.dump(s, f, indent=4)
