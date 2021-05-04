@@ -220,12 +220,12 @@ class ProcessingMethod():
         allow_none=True,
         validate=CaseInsensitiveOneOf(value_sets.rec_eff_target_name)
     )
-    
+
     rec_eff_spike_matrix = fields.String(
         allow_none=True,
         validate=CaseInsensitiveOneOf(value_sets.rec_eff_spike_matrix)
     )
-    
+
     rec_eff_spike_conc = fields.Float(
         allow_none=True,
         metadata={'Units': 'log10 copies/mL'}
@@ -238,7 +238,7 @@ class ProcessingMethod():
             'rec_eff_spike_matrix',
             'rec_eff_spike_conc'
         ]
-        
+
         if data['rec_eff_percent'] != -1 \
            and not all(data.get(k) for k in dependent):
             raise ValidationError(
