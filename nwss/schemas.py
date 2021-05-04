@@ -220,66 +220,40 @@ class ProcessingMethod():
         allow_none=True,
         validate=CaseInsensitiveOneOf(value_sets.rec_eff_target_name)
     )
-
-    @validates_schema
-    def validate_rec_eff_target_name_percent(self, data, **kwargs):
-        """
-        rec_eff_target_name and rec_eff_percent are dependent.
-        """
-
-        if not data['rec_eff_percent'] == -1 \
-           and not data['rec_eff_target_name']:
-            raise ValidationError(
-                'rec_eff_target_name cannot be empty if '
-                'rec_eff_percent is not equal to -1.'
-            )
-
-        # TODO:
-        # This isn't explicitly said in the docs, but one could
-        # reason that a rec_eff_percent of -1 would require that
-        # all of the rec_eff_* fields be empty.
-        # Should we validate that those fields are empty or leave them alone?
-        # If we validate, then we'd need to do the same for
-        # rec_eff_spike_matrix and rec_eff_spike_conc.
-        if data['rec_eff_percent'] == -1 \
-           and data['rec_eff_target_name']:
-            raise ValidationError(
-                'rec_eff_target_name must be empty if '
-                'rec_eff_percent == -1.'
-            )
-
+    
     rec_eff_spike_matrix = fields.String(
         allow_none=True,
         validate=CaseInsensitiveOneOf(value_sets.rec_eff_spike_matrix)
     )
-
-    @validates_schema
-    def validate_rec_eff_spike_matrix(self, data, **kwargs):
-        """
-        rec_eff_spike_matrix and rec_eff_target_name are dependent.
-        """
-        if data['rec_eff_target_name'] \
-           and not data['rec_eff_spike_matrix']:
-            raise ValidationError(
-                'If rec_eff_target_name has a non-empty value, '
-                'then rec_eff_spike_matrix must have a value.'
-            )
-
+    
     rec_eff_spike_conc = fields.Float(
         allow_none=True,
         metadata={'Units': 'log10 copies/mL'}
     )
 
     @validates_schema
-    def validate_rec_eff_spike_conc(self, data, **kwargs):
-        """
-        rec_eff_spike_conc and rec_eff_target_name are dependent.
-        """
-        if data['rec_eff_target_name'] \
-           and not data.get('rec_eff_spike_conc'):
+    def validate_rec_eff(self, data, **kwargs):
+        dependent = [
+            'rec_eff_target_name',
+            'rec_eff_spike_matrix',
+            'rec_eff_spike_conc'
+        ]
+        
+        if data['rec_eff_percent'] != -1 \
+           and not all(data.get(k) for k in dependent):
             raise ValidationError(
-                'If rec_eff_target_name has a non-empty value, '
-                'rec_eff_spike_conc must have a non-empty value.'
+                "If rec_eff_percent is not equal to -1, "
+                "then 'rec_eff_target_name', "
+                "'rec_eff_spike_matrix', "
+                "and 'rec_eff_spike_conc' "
+                "cannot be empty."
+            )
+
+        if data['rec_eff_percent'] == -1 \
+           and any(data.get(k) for k in dependent):
+            raise ValidationError(
+                'rec_eff_target_name must be empty if '
+                'rec_eff_percent == -1.'
             )
 
     pasteurized = fields.String(
@@ -350,7 +324,7 @@ class QuantificationMethod():
 
     hum_frac_chem_conc = fields.Float(
         allow_none=True,
-        metadat={'Units': "specified in 'hum_frac_chem_unit'."}
+        metadata={'Units': "specified in 'hum_frac_chem_unit'."}
     )
 
     hum_frac_chem_unit = fields.String(

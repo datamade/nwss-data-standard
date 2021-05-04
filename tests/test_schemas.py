@@ -1035,24 +1035,20 @@ def test_ext_blank(schema, valid_data, input, expect, error):
     [
         (
             {
-                'rec_eff_percent': 11,
-                'rec_eff_target_name': 'bcov vaccine'
+                'rec_eff_percent': 52,
+                'rec_eff_target_name': 'oc43',
+                'rec_eff_spike_matrix': 'raw sample post pasteurization',
+                'rec_eff_spike_conc': 0.324132
             },
             does_not_raise(),
             None
         ),
         (
             {
-                'rec_eff_percent': 52,
-                'rec_eff_target_name': 'oc43'
-            },
-            does_not_raise(),
-            None
-        ),
-        (
-            {
-                'rec_eff_percent': 52,
-                'rec_eff_target_name': 'OC43'
+                'rec_eff_percent': 22,
+                'rec_eff_target_name': 'OC43',
+                'rec_eff_spike_matrix': 'RAW SAMPLE POST PASTEURIZATION',
+                'rec_eff_spike_conc': 3.24132
             },
             does_not_raise(),
             None
@@ -1060,7 +1056,9 @@ def test_ext_blank(schema, valid_data, input, expect, error):
         (
             {
                 'rec_eff_percent': -1,
-                'rec_eff_target_name': ''
+                'rec_eff_target_name': '',
+                'rec_eff_spike_matrix': '',
+                'rec_eff_spike_conc': ''
             },
             does_not_raise(),
             None
@@ -1079,57 +1077,11 @@ def test_ext_blank(schema, valid_data, input, expect, error):
                 'rec_eff_target_name': ''
             },
             pytest.raises(ValidationError),
-            'rec_eff_target_name cannot be empty'
-        ),
-        (
-            {
-                'rec_eff_percent': 57,
-                'rec_eff_target_name': 'coliphage'
-            },
-            pytest.raises(ValidationError),
-            'Must be one of:'
-        )
-    ]
-)
-def test_eff_percent_target_name(schema, valid_data, input, expect, error):
-    data = update_data(input, valid_data)
-
-    with expect as e:
-        schema.load(data)
-
-    if e:
-        assert error in str(e.value)
-
-
-@pytest.mark.parametrize(
-    'input,expect,error',
-    [
-        (
-            {
-                'rec_eff_percent': 52,
-                'rec_eff_target_name': 'oc43',
-                'rec_eff_spike_matrix': 'raw sample post pasteurization'
-            },
-            does_not_raise(),
-            None
-        ),
-        (
-            {
-                'rec_eff_percent': 22,
-                'rec_eff_target_name': 'OC43',
-                'rec_eff_spike_matrix': 'RAW SAMPLE POST PASTEURIZATION'
-            },
-            does_not_raise(),
-            None
-        ),
-        (
-            {
-                'rec_eff_percent': -1,
-                'rec_eff_target_name': '',
-                'rec_eff_spike_matrix': ''
-            },
-            does_not_raise(),
-            None
+            "If rec_eff_percent is not equal to -1, "
+            "then 'rec_eff_target_name', "
+            "'rec_eff_spike_matrix', "
+            "and 'rec_eff_spike_conc' "
+            "cannot be empty."
         ),
         (
             {
@@ -1138,7 +1090,19 @@ def test_eff_percent_target_name(schema, valid_data, input, expect, error):
                 'rec_eff_spike_matrix': ''
             },
             pytest.raises(ValidationError),
-            'rec_eff_spike_matrix must have a value'
+            "If rec_eff_percent is not equal to -1, "
+            "then 'rec_eff_target_name', "
+            "'rec_eff_spike_matrix', "
+            "and 'rec_eff_spike_conc' "
+            "cannot be empty."
+        ),
+        (
+            {
+                'rec_eff_percent': 57,
+                'rec_eff_target_name': 'coliphage'
+            },
+            pytest.raises(ValidationError),
+            'Must be one of:'
         ),
         (
             {
@@ -1151,7 +1115,7 @@ def test_eff_percent_target_name(schema, valid_data, input, expect, error):
         )
     ]
 )
-def test_rec_eff_spike_matrix(schema, valid_data, input, expect, error):
+def test_rec_eff(schema, valid_data, input, expect, error):
     data = update_data(input, valid_data)
 
     with expect as e:
