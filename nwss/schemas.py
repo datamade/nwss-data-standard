@@ -8,6 +8,8 @@ from nwss.utils import get_future_date
 
 
 class CaseInsensitiveOneOf(validate.OneOf):
+    _jsonschema_base_validator_class = validate.OneOf
+
     def __call__(self, value) -> str:
         try:
             if not any(value.casefold() == v.casefold() for v in self.choices):
@@ -21,7 +23,7 @@ class CaseInsensitiveOneOf(validate.OneOf):
 class CollectionSite():
     reporting_jurisdiction = fields.String(
         required=True,
-        validate=CaseInsensitiveOneOf(value_sets.reporting_jurisdiction)
+        validate=validate.OneOf(value_sets.reporting_jurisdiction)
     )
 
     county_names = nwss_fields.ListString(missing=None)
@@ -51,7 +53,7 @@ class CollectionSite():
 
     sample_location = fields.String(
         required=True,
-        validate=CaseInsensitiveOneOf(value_sets.sample_location)
+        validate=validate.OneOf(value_sets.sample_location)
     )
 
     sample_location_specify = fields.Str(
@@ -292,6 +294,8 @@ class QuantificationMethod():
     hum_frac_target_mic_ref = fields.String(
         allow_none=True
     )
+    
+    
 
     @validates_schema
     def validate_hum_frac_mic_conc(self, data, **kwargs):
@@ -462,9 +466,12 @@ class Sample():
         allow_none=True
     )
 
+    def _utc_regex(self):
+        return re.compile('utc-(\\d{2}):(\\d{2})', re.IGNORECASE)
+
     @validates('time_zone')
     def validate_time_zone(self, value):
-        regex = re.compile('utc-(\\d{2}):(\\d{2})', re.IGNORECASE)
+        regex = self._utc_regex()
 
         if value and not regex.match(value):
             raise ValidationError(
