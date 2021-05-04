@@ -249,13 +249,6 @@ class ProcessingMethod():
                 "cannot be empty."
             )
 
-        if data['rec_eff_percent'] == -1 \
-           and any(data.get(k) for k in dependent):
-            raise ValidationError(
-                'rec_eff_target_name must be empty if '
-                'rec_eff_percent == -1.'
-            )
-
     pasteurized = fields.String(
         allow_none=True,
         validate=CaseInsensitiveOneOf(value_sets.yes_no_empty)

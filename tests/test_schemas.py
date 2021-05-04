@@ -1055,24 +1055,6 @@ def test_ext_blank(schema, valid_data, input, expect, error):
         ),
         (
             {
-                'rec_eff_percent': -1,
-                'rec_eff_target_name': '',
-                'rec_eff_spike_matrix': '',
-                'rec_eff_spike_conc': ''
-            },
-            does_not_raise(),
-            None
-        ),
-        (
-            {
-                'rec_eff_percent': -1,
-                'rec_eff_target_name': 'murine coronavirus'
-            },
-            pytest.raises(ValidationError),
-            'rec_eff_target_name must be empty'
-        ),
-        (
-            {
                 'rec_eff_percent': 63,
                 'rec_eff_target_name': ''
             },
