@@ -9,5 +9,3 @@ s = json_schema.dump(schema)
 
 with open('schema.json', 'w') as f:
     json.dump(s, f)
-# from pprint import pprint
-# pprint(s)
