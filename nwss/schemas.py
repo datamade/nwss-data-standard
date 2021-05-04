@@ -23,7 +23,7 @@ class CaseInsensitiveOneOf(validate.OneOf):
 class CollectionSite():
     reporting_jurisdiction = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.reporting_jurisdiction)
+        validate=CaseInsensitiveOneOf(value_sets.reporting_jurisdiction)
     )
 
     county_names = nwss_fields.ListString(missing=None)
@@ -53,7 +53,7 @@ class CollectionSite():
 
     sample_location = fields.String(
         required=True,
-        validate=validate.OneOf(value_sets.sample_location)
+        validate=CaseInsensitiveOneOf(value_sets.sample_location)
     )
 
     sample_location_specify = fields.Str(
