@@ -1,0 +1,438 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "WaterSampleSchema": {
+      "required": [
+        "capacity_mgd",
+        "concentration_method",
+        "extraction_method",
+        "inhibition_detect",
+        "inhibition_method",
+        "institution_type",
+        "lab_id",
+        "lod_ref",
+        "lod_sewage",
+        "ntc_amplify",
+        "num_no_target_control",
+        "pcr_target",
+        "pcr_target_ref",
+        "pcr_type",
+        "population_served",
+        "quant_stan_type",
+        "rec_eff_percent",
+        "reporting_jurisdiction",
+        "sample_collect_date",
+        "sample_collect_time",
+        "sample_id",
+        "sample_location",
+        "sample_matrix",
+        "sample_type",
+        "sars_cov2_avg_conc",
+        "sars_cov2_below_lod",
+        "sars_cov2_units",
+        "stan_ref",
+        "test_result_date",
+        "wwtp_jurisdiction",
+        "wwtp_name",
+        "zipcode"
+      ],
+      "properties": {
+        "capacity_mgd": {
+          "title": "capacity_mgd",
+          "type": "number",
+          "format": "float",
+          "Units": "Million gallons per day (MGD)",
+          "minimum": 0
+        },
+        "collection_storage_temp": {
+          "title": "collection_storage_temp",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Celsius"
+        },
+        "collection_storage_time": {
+          "title": "collection_storage_time",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Hours",
+          "minimum": 0
+        },
+        "collection_water_temp": {
+          "title": "collection_water_temp",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Celsius",
+          "minimum": 0
+        },
+        "composite_freq": {
+          "title": "composite_freq",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Flow-weighted composite: number per million gallons; Time-weighted or manual composite: number per hour",
+          "minimum": 0
+        },
+        "concentration_method": {
+          "title": "concentration_method",
+          "type": "string"
+        },
+        "conductivity": {
+          "title": "conductivity",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "microsiemens/cm",
+          "minimum": 0
+        },
+        "county_names": { 
+          "title": "county_names", 
+          "type": ["string", "null"]
+        },
+        "epaid": {
+          "title": "epaid",
+          "type": ["string", "null"],
+          "pattern": "^([a-zA-Z]{2})(\\d{7})$"
+        },
+        "equiv_sewage_amt": {
+          "title": "equiv_sewage_amt",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "mL wastewater or g sludge",
+          "minimum": 0
+        },
+        "ext_blank": { 
+          "title": "ext_blank",
+          "type": ["string", "null"]
+        },
+        "extraction_method": { 
+          "title": "extraction_method",
+          "type": "string"
+        },
+        "flow_rate": {
+          "title": "flow_rate",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Million gallons per day (MGD)",
+          "minimum": 0
+        },
+        "hum_frac_chem_conc": {
+          "title": "hum_frac_chem_conc",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "specified in 'hum_frac_chem_unit'."
+        },
+        "hum_frac_chem_unit": {
+          "title": "hum_frac_chem_unit",
+          "type": ["string", "null"]
+        },
+        "hum_frac_mic_conc": {
+          "title": "hum_frac_mic_conc",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "specified in 'hum_frac_mic_unit'"
+        },
+        "hum_frac_mic_unit": {
+          "title": "hum_frac_mic_unit",
+          "type": ["string", "null"]
+        },
+        "hum_frac_target_chem": {
+          "title": "hum_frac_target_chem",
+          "type": ["string", "null"]
+        },
+        "hum_frac_target_chem_ref": {
+          "title": "hum_frac_target_chem_ref",
+          "type": ["string", "null"]
+        },
+        "hum_frac_target_mic": {
+          "title": "hum_frac_target_mic",
+          "type": ["string", "null"]
+        },
+        "hum_frac_target_mic_ref": {
+          "title": "hum_frac_target_mic_ref",
+          "type": ["string", "null"]
+        },
+        "industrial_input": {
+          "title": "industrial_input",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Percent",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "influent_equilibrated": {
+          "title": "influent_equilibrated",
+          "type": ["string", "null"]
+        },
+        "inhibition_adjust": {
+          "title": "inhibition_adjust",
+          "type": ["string", "null"]
+        },
+        "inhibition_detect": { 
+          "title": "inhibition_detect",
+          "type": "string"
+        },
+        "inhibition_method": { 
+          "title": "inhibition_method",
+          "type": "string"
+        },
+        "institution_type": { 
+          "title": "institution_type",
+          "type": "string" 
+        },
+        "lab_id": {
+          "title": "lab_id",
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9-_]{1,20}$"
+        },
+        "lod_ref": { 
+          "title": "lod_ref",
+          "type": "string" 
+        },
+        "lod_sewage": {
+          "title": "lod_sewage",
+          "type": "number",
+          "format": "float",
+          "Units": "specified in sars_cov2_units"
+        },
+        "ntc_amplify": { 
+          "title": "ntc_amplify",
+          "type": "string"
+        },
+        "num_no_target_control": {
+          "title": "num_no_target_control",
+          "type": "string"
+        },
+        "other_jurisdiction": {
+          "title": "other_jurisdiction",
+          "type": ["string", "null"]
+        },
+        "other_norm_conc": {
+          "title": "other_norm_conc",
+          "type": ["number", "null"],
+          "format": "float"
+        },
+        "other_norm_name": {
+          "title": "other_norm_name",
+          "type": ["string", "null"]
+        },
+        "other_norm_ref": {
+          "title": "other_norm_ref",
+          "type": ["string", "null"]
+        },
+        "other_norm_unit": {
+          "title": "other_norm_unit",
+          "type": ["string", "null"]
+        },
+        "pasteurized": { 
+          "title": "pasteurized",
+          "type": ["string", "null"]
+        },
+        "pcr_target": { 
+          "title": "pcr_target",
+          "type": "string"
+        },
+        "pcr_target_ref": { 
+          "title": "pcr_target_ref",
+          "type": "string"
+        },
+        "pcr_type": { 
+          "title": "pcr_type",
+          "type": "string"
+        },
+        "ph": {
+          "title": "ph",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "pH units"
+        },
+        "population_served": {
+          "title": "population_served",
+          "type": "number",
+          "format": "integer",
+          "minimum": 0
+        },
+        "pre_conc_storage_temp": {
+          "title": "pre_conc_storage_temp",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Celsius"
+        },
+        "pre_conc_storage_time": {
+          "title": "pre_conc_storage_time",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Hours",
+          "minimum": 0
+        },
+        "pre_ext_storage_temp": {
+          "title": "pre_ext_storage_temp",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Celsius"
+        },
+        "pre_ext_storage_time": {
+          "title": "pre_ext_storage_time",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Hours",
+          "minimum": 0
+        },
+        "pretreatment": { 
+          "title": "pretreatment",
+          "type": ["string", "null"]
+        },
+        "pretreatment_specify": {
+          "title": "pretreatment_specify",
+          "type": ["string", "null"]
+        },
+        "quality_flag": { 
+          "title": "quality_flag",
+          "type": ["string", "null"]
+        },
+        "quant_stan_type": { 
+          "title": "quant_stan_type",
+          "type": "string" 
+        },
+        "rec_eff_percent": {
+          "title": "rec_eff_percent",
+          "type": "number",
+          "format": "float",
+          "Units": "percent",
+          "minimum": -1
+        },
+        "rec_eff_spike_conc": {
+          "title": "rec_eff_spike_conc",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "log10 copies/mL"
+        },
+        "rec_eff_spike_matrix": {
+          "title": "rec_eff_spike_matrix",
+          "type": ["string", "null"]
+        },
+        "rec_eff_target_name": {
+          "title": "rec_eff_target_name",
+          "type": ["string", "null"]
+        },
+        "reporting_jurisdiction": {
+          "title": "reporting_jurisdiction",
+          "type": "string"
+        },
+        "sample_collect_date": {
+          "title": "sample_collect_date",
+          "type": "string",
+          "format": "date"
+        },
+        "sample_collect_time": {
+          "title": "sample_collect_time",
+          "type": "string",
+          "format": "time"
+        },
+        "sample_id": {
+          "title": "sample_id",
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9-_]{1,20}$"
+        },
+        "sample_location": { 
+          "title": "sample_location",
+          "type": "string"
+        },
+        "sample_location_specify": {
+          "title": "sample_location_specify",
+          "type": ["string", "null"],
+          "maxLength": 40
+        },
+        "sample_matrix": { 
+          "title": "sample_matrix",
+          "type": "string" 
+        },
+        "sample_type": { 
+          "title": "sample_type",
+          "type": "string"
+        },
+        "sars_cov2_avg_conc": {
+          "title": "sars_cov2_avg_conc",
+          "type": "number",
+          "format": "float",
+          "Units": "specified in sars_cov2_units"
+        },
+        "sars_cov2_below_lod": {
+          "title": "sars_cov2_below_lod",
+          "type": "string"
+        },
+        "sars_cov2_cl_95_lo": {
+          "title": "sars_cov2_cl_95_lo",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "specified in sars_cov2_units"
+        },
+        "sars_cov2_cl_95_up": {
+          "title": "sars_cov2_cl_95_up",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "specified in sars_cov2_units"
+        },
+        "sars_cov2_std_error": {
+          "title": "sars_cov2_std_error",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "specified in sars_cov2_units",
+          "minimum": -1
+        },
+        "sars_cov2_units": { 
+          "title": "sars_cov2_units",
+          "type": "string"
+        },
+        "sewage_travel_time": {
+          "title": "sewage_travel_time",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "Time in hours.",
+          "minimum": 0
+        },
+        "solids_separation": {
+          "title": "solids_separation",
+          "type": ["string", "null"]
+        },
+        "stan_ref": { "title": "stan_ref", "type": "string" },
+        "stormwater_input": {
+          "title": "stormwater_input",
+          "type": ["string", "null"]
+        },
+        "test_result_date": {
+          "title": "test_result_date",
+          "type": "string",
+          "format": "date"
+        },
+        "time_zone": { "title": "time_zone", "type": ["string", "null"] },
+        "tot_conc_vol": {
+          "title": "tot_conc_vol",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "mL",
+          "minimum": 0
+        },
+        "tss": {
+          "title": "tss",
+          "type": ["number", "null"],
+          "format": "float",
+          "Units": "mg/L",
+          "minimum": 0
+        },
+        "wwtp_jurisdiction": { "title": "wwtp_jurisdiction", "type": "string" },
+        "wwtp_name": {
+          "title": "wwtp_name",
+          "type": "string",
+          "maxLength": 40
+        },
+        "zipcode": {
+          "title": "zipcode",
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/WaterSampleSchema"
+}
