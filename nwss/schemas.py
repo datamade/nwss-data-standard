@@ -29,6 +29,7 @@ class CollectionSite():
     county_names = nwss_fields.ListString(missing=None)
     other_jurisdiction = nwss_fields.ListString(missing=None)
 
+    # TODO: add to schematize
     @validates_schema
     def validate_county_jurisdiction(self, data, **kwargs):
         if not data['county_names'] and not data['other_jurisdiction']:
@@ -61,6 +62,7 @@ class CollectionSite():
         allow_none=True
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_sample_location(self, data, **kwargs):
         if data['sample_location'] == 'upstream' \
@@ -153,6 +155,7 @@ class CollectionMethod():
         allow_none=True,
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_pretreatment(self, data, **kwargs):
         if data['pretreatment'] == 'yes' \
@@ -233,6 +236,7 @@ class ProcessingMethod():
         metadata={'units': 'log10 copies/mL'}
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_rec_eff(self, data, **kwargs):
         dependent = [
@@ -294,9 +298,8 @@ class QuantificationMethod():
     hum_frac_target_mic_ref = fields.String(
         allow_none=True
     )
-    
-    
 
+    # TODO: add to schematize
     @validates_schema
     def validate_hum_frac_mic_conc(self, data, **kwargs):
         """
@@ -338,6 +341,7 @@ class QuantificationMethod():
         allow_none=True
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_hum_frac_chem_conc(self, data, **kwargs):
         """
@@ -377,6 +381,7 @@ class QuantificationMethod():
         allow_none=True
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_other_norm_conc(self, data, **kwargs):
         """
@@ -420,6 +425,7 @@ class QuantificationMethod():
         required=True
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_inhibition_detect(self, data, **kwargs):
         if data['inhibition_detect'] == 'yes' \
@@ -448,6 +454,7 @@ class Sample():
         required=True
     )
 
+    # TODO: field-level
     @validates('sample_collect_date')
     def validate_sample_collect_date(self, value):
         tomorrow = get_future_date(24)
@@ -463,20 +470,9 @@ class Sample():
     )
 
     time_zone = fields.String(
-        allow_none=True
+        allow_none=True,
+        validate=validate.Regexp('utc-(\\d{2}):(\\d{2})', re.IGNORECASE)
     )
-
-    def _utc_regex(self):
-        return re.compile('utc-(\\d{2}):(\\d{2})', re.IGNORECASE)
-
-    @validates('time_zone')
-    def validate_time_zone(self, value):
-        regex = self._utc_regex()
-
-        if value and not regex.match(value):
-            raise ValidationError(
-                "Not a valid time_zone."
-            )
 
     flow_rate = fields.Float(
         allow_none=True,
@@ -484,6 +480,7 @@ class Sample():
         metadata={'units': 'Million gallons per day (MGD)'}
     )
 
+    # TODO: 
     @validates_schema
     def validate_flow_rate(self, data, **kwargs):
         sample_matrix_required = [
@@ -546,6 +543,7 @@ class QuantificationResults():
         required=True
     )
 
+    # TODO: 
     @validates_schema
     def validate_test_result_date(self, data, **kwargs):
         tomorrow = get_future_date(24)
@@ -590,6 +588,7 @@ class QuantificationResults():
         metadata={'units': 'specified in sars_cov2_units'}
     )
 
+    # TODO: add to schematize
     @validates_schema
     def validate_sars_cov2(self, data, **kwargs):
         fields = [

@@ -1817,7 +1817,7 @@ def test_sample_collect_time(schema, valid_data, input, expect, error):
                 'time_zone': 'central'
             },
             pytest.raises(ValidationError),
-            'Not a valid time'
+            'String does not match expected pattern.'
         )
     ]
 )
