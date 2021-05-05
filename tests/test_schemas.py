@@ -25,12 +25,6 @@ def update_data(input, valid_data):
     return [data]
 
 
-# def get_future_date(hours):
-#     future_date = (datetime.date.today() +
-#                    datetime.timedelta(hours=hours))
-#     return future_date.strftime('%Y-%m-%d')
-
-
 @pytest.mark.parametrize(
     'input,expect,error',
     [
