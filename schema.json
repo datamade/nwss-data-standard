@@ -2,6 +2,40 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "WaterSampleSchema": {
+            "required": [
+                "capacity_mgd",
+                "concentration_method",
+                "extraction_method",
+                "inhibition_detect",
+                "inhibition_method",
+                "institution_type",
+                "lab_id",
+                "lod_ref",
+                "lod_sewage",
+                "ntc_amplify",
+                "num_no_target_control",
+                "pcr_target",
+                "pcr_target_ref",
+                "pcr_type",
+                "population_served",
+                "quant_stan_type",
+                "rec_eff_percent",
+                "reporting_jurisdiction",
+                "sample_collect_date",
+                "sample_collect_time",
+                "sample_id",
+                "sample_location",
+                "sample_matrix",
+                "sample_type",
+                "sars_cov2_avg_conc",
+                "sars_cov2_below_lod",
+                "sars_cov2_units",
+                "stan_ref",
+                "test_result_date",
+                "wwtp_jurisdiction",
+                "wwtp_name",
+                "zipcode"
+            ],
             "properties": {
                 "capacity_mgd": {
                     "title": "capacity_mgd",
@@ -117,7 +151,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -172,7 +207,8 @@
                         "micrograms/g wet sludge",
                         "log10 micrograms/g wet sludge",
                         "micrograms/g dry sludge",
-                        "log10 micrograms/g dry sludge"
+                        "log10 micrograms/g dry sludge",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -197,7 +233,8 @@
                         "copies/g wet sludge",
                         "log10 copies/g wet sludge",
                         "copies/g dry sludge",
-                        "log10 copies/g dry sludge"
+                        "log10 copies/g dry sludge",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -211,7 +248,8 @@
                         "caffeine",
                         "creatinine",
                         "sucralose",
-                        "ibuprofen"
+                        "ibuprofen",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -231,7 +269,8 @@
                     "enum": [
                         "pepper mild mottle virus",
                         "crassphage",
-                        "hf183"
+                        "hf183",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -261,7 +300,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -273,7 +313,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -333,7 +374,8 @@
                     "type": "string",
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -377,7 +419,8 @@
                         "caffeine",
                         "creatinine",
                         "sucralose",
-                        "ibuprofen"
+                        "ibuprofen",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -406,7 +449,8 @@
                         "micrograms/g wet sludge",
                         "log10 micrograms/g wet sludge",
                         "micrograms/g dry sludge",
-                        "log10 micrograms/g dry sludge"
+                        "log10 micrograms/g dry sludge",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -418,7 +462,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -524,7 +569,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -543,7 +589,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -583,7 +630,8 @@
                         "raw sample post pasteurization",
                         "clarified sample",
                         "sample concentrate",
-                        "lysis buffer"
+                        "lysis buffer",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -601,7 +649,8 @@
                         "phi6",
                         "puro",
                         "ms2 coliphage",
-                        "hep g armored rna"
+                        "hep g armored rna",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -831,7 +880,8 @@
                     "type": "string",
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -917,7 +967,8 @@
                     ],
                     "enum": [
                         "yes",
-                        "no"
+                        "no",
+                        null
                     ],
                     "enumNames": []
                 },
@@ -1032,40 +1083,6 @@
                 }
             },
             "type": "object",
-            "required": [
-                "capacity_mgd",
-                "concentration_method",
-                "extraction_method",
-                "inhibition_detect",
-                "inhibition_method",
-                "institution_type",
-                "lab_id",
-                "lod_ref",
-                "lod_sewage",
-                "ntc_amplify",
-                "num_no_target_control",
-                "pcr_target",
-                "pcr_target_ref",
-                "pcr_type",
-                "population_served",
-                "quant_stan_type",
-                "rec_eff_percent",
-                "reporting_jurisdiction",
-                "sample_collect_date",
-                "sample_collect_time",
-                "sample_id",
-                "sample_location",
-                "sample_matrix",
-                "sample_type",
-                "sars_cov2_avg_conc",
-                "sars_cov2_below_lod",
-                "sars_cov2_units",
-                "stan_ref",
-                "test_result_date",
-                "wwtp_jurisdiction",
-                "wwtp_name",
-                "zipcode"
-            ],
             "additionalProperties": false,
             "dependencies": {
                 "hum_frac_mic_conc": [
@@ -1089,7 +1106,9 @@
                     "if": {
                         "properties": {
                             "sample_location": {
-                                "const": "upstream"
+                                "enum": [
+                                    "upstream"
+                                ]
                             }
                         },
                         "required": [
@@ -1114,7 +1133,9 @@
                     "if": {
                         "properties": {
                             "pretreatment": {
-                                "const": "yes"
+                                "enum": [
+                                    "yes"
+                                ]
                             }
                         },
                         "required": [
@@ -1169,7 +1190,9 @@
                 {
                     "properties": {
                         "inhibition_detect": {
-                            "const": "yes"
+                            "enum": [
+                                "yes"
+                            ]
                         }
                     },
                     "required": [
@@ -1180,7 +1203,9 @@
                     "if": {
                         "properties": {
                             "inhibition_detect": {
-                                "const": "not tested"
+                                "enum": [
+                                    "not tested"
+                                ]
                             }
                         },
                         "required": [
@@ -1190,7 +1215,9 @@
                     "then": {
                         "properties": {
                             "inhibition_method": {
-                                "const": "none"
+                                "enum": [
+                                    "none"
+                                ]
                             }
                         },
                         "required": [
