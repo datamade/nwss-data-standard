@@ -3,7 +3,8 @@ from setuptools import setup, find_packages
 
 install_requires = [
     "marshmallow>=3.11.1",
-    "marshmallow-jsonschema>=0.11.1"
+    "marshmallow-jsonschema>=0.11.1",
+    "jsonschema>=3.2.0"
 ]
 
 extras_require = {

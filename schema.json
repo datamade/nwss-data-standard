@@ -2,7 +2,6 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "WaterSampleSchema": {
-            "type": "object",
             "properties": {
                 "capacity_mgd": {
                     "title": "capacity_mgd",
@@ -932,7 +931,8 @@
                     "type": [
                         "string",
                         "null"
-                    ]
+                    ],
+                    "pattern": "utc-(\\d{2}):(\\d{2})"
                 },
                 "tot_conc_vol": {
                     "title": "tot_conc_vol",
@@ -1031,6 +1031,7 @@
                     "maxLength": 5
                 }
             },
+            "type": "object",
             "required": [
                 "capacity_mgd",
                 "concentration_method",
@@ -1065,7 +1066,169 @@
                 "wwtp_name",
                 "zipcode"
             ],
-            "additionalProperties": false
+            "additionalProperties": false,
+            "dependencies": {
+                "hum_frac_mic_conc": [
+                    "hum_frac_mic_unit",
+                    "hum_frac_target_mic",
+                    "hum_frac_target_mic_ref"
+                ],
+                "hum_frac_chem_conc": [
+                    "hum_frac_chem_unit",
+                    "hum_frac_target_chem",
+                    "hum_frac_target_chem_ref"
+                ],
+                "other_norm_conc": [
+                    "other_norm_name",
+                    "other_norm_unit",
+                    "other_norm_ref"
+                ]
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "sample_location": {
+                                "const": "upstream"
+                            }
+                        },
+                        "required": [
+                            "sample_location"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "sample_location_specify": {
+                                "type": [
+                                    "string"
+                                ],
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "sample_location_specify"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "pretreatment": {
+                                "const": "yes"
+                            }
+                        },
+                        "required": [
+                            "pretreatment"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "pretreatment_specify": {
+                                "type": [
+                                    "string"
+                                ],
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "pretreatment_specify"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "sample_matrix": {
+                                "enum": [
+                                    "raw wastewater",
+                                    "post grit removal",
+                                    "primary effluent",
+                                    "secondary effluent"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "sample_matrix"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "flow_rate": {
+                                "type": [
+                                    "number"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "flow_rate"
+                        ]
+                    }
+                }
+            ],
+            "anyOf": [
+                {
+                    "properties": {
+                        "inhibition_detect": {
+                            "const": "yes"
+                        }
+                    },
+                    "required": [
+                        "inhibition_adjust"
+                    ]
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "inhibition_detect": {
+                                "const": "not tested"
+                            }
+                        },
+                        "required": [
+                            "inhibition_detect"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "inhibition_method": {
+                                "const": "none"
+                            }
+                        },
+                        "required": [
+                            "inhibition_method"
+                        ]
+                    }
+                }
+            ],
+            "oneOf": [
+                {
+                    "properties": {
+                        "county_names": {
+                            "title": "county_names",
+                            "type": [
+                                "string"
+                            ],
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "county_names"
+                    ]
+                },
+                {
+                    "properties": {
+                        "other_jurisdiction": {
+                            "title": "other_jurisdiction",
+                            "type": [
+                                "string"
+                            ],
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "other_jurisdiction"
+                    ]
+                }
+            ]
         }
     },
     "$ref": "#/definitions/WaterSampleSchema"
