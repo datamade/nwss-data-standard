@@ -76,6 +76,11 @@ class FileValidator {
             validate: data => Number.isInteger(data)
         })
 
+        ajv.addFormat('time', {
+            type: 'string',
+            validate: data => new RegExp('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$').test(data)
+        })
+
         ajv.addKeyword({
             keyword: 'units'
         })
@@ -98,7 +103,7 @@ class FileValidator {
 
                 return true;
             }
-        });
+        })
 
         const validate = ajv.compile(this.schema)
         validate(sheetData)
@@ -137,9 +142,11 @@ class FileValidator {
         const errorData = []
 
         errors.forEach(error => {
+            // Skip an "if" error and render all other errors,
+            // because an "if" error object doesn't provide any
+            // relevant error information. In this case, we will 
+            // capture and render the associated "then" error.
             if (error.keyword === 'if') {
-                // skip this because it doesn't give a column name or
-                // a helpful message: "must match 'then' schema"
                 return
             }
 
