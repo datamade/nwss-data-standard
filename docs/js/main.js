@@ -137,9 +137,11 @@ class FileValidator {
         const errorData = []
 
         errors.forEach(error => {
+            // Skip an "if" error and render all other errors,
+            // because an "if" error object doesn't provide any
+            // relevant error information. In this case, we will 
+            // capture and render the associated "then" error.
             if (error.keyword === 'if') {
-                // skip this because it doesn't give a column name or
-                // a helpful message: "must match 'then' schema"
                 return
             }
 
