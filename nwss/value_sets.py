@@ -302,7 +302,8 @@ extraction_method = [
     'phenol chloroform',
     'chemagic viral dna/rna 300 kit',
     'trizol, zymo mag beads w/ zymo clean and concentrator',
-    '4s method (https://www.protocols.io/view/v-4-direct-wastewater-rna-capture-and-purification-bpdfmi3n)'
+    '4s method(https://www.protocols.io/view/'
+    'v-4-direct-wastewater-rna-capture-and-purification-bpdfmi3n)'
 ]
 
 rec_eff_target_name = [
