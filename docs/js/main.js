@@ -136,8 +136,6 @@ class FileValidator {
 
         const errorData = []
 
-        console.log(errors)
-
         errors.forEach(error => {
             // Skip an "if" error and render all other errors,
             // because an "if" error object doesn't provide any
