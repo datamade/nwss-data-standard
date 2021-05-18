@@ -136,6 +136,8 @@ class FileValidator {
 
         const errorData = []
 
+        console.log(errors)
+
         errors.forEach(error => {
             // Skip an "if" error and render all other errors,
             // because an "if" error object doesn't provide any
@@ -149,13 +151,15 @@ class FileValidator {
             const lineNumber = parseInt(lineAndColumn[1]) + 1
             const additionalInfo = Object.values({...error.params})[0]
             const column = lineAndColumn[2] ? lineAndColumn[2] : additionalInfo
+            const allowedValues = error.params.allowedValues 
+                                    ? `: <br>${error.params.allowedValues.join(', ')}` : ''
 
             errorTableBody.insertAdjacentHTML(
                 'beforeend',
                 `<tr>
                     <td>${lineNumber}</td>
                     <td>${column}</td>
-                    <td>${error.message}</td>
+                    <td>${error.message}${allowedValues}</td>
                 </tr>`
             )
 
