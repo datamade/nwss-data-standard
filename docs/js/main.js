@@ -126,8 +126,8 @@ class FileValidator {
                 <tr>
                     <th>Line number</th>
                     <th>Column</th>
+                    <th>Value</th>
                     <th>Error</th>
-                    <th>Input Value</th>
                 </tr>
             </thead>
             <tbody id="errors"></tbody>
@@ -152,23 +152,23 @@ class FileValidator {
             const column = lineAndColumn[2] ? lineAndColumn[2] : additionalInfo
             const allowedValues = error.params.allowedValues 
                                     ? `: <br>${error.params.allowedValues.join(', ')}` : ''
-            const inputValue = sheetData[lineAndColumn[1]][column]
+            const value = sheetData[lineAndColumn[1]][column]
 
             errorTableBody.insertAdjacentHTML(
                 'beforeend',
                 `<tr>
                     <td>${lineNumber}</td>
                     <td>${column}</td>
+                    <td>${value ? value : ''}</td>
                     <td>${error.message}${allowedValues}</td>
-                    <td>${inputValue ? inputValue : ''}</td>
                 </tr>`
             )
 
             errorData.push({
                 'line_number': lineNumber,
                 'column': column,
-                'message': error.message,
-                'input': inputValue ? inputValue : ''})
+                'value': value ? value : '',
+                'message': error.message})
         })
 
         outputDiv.appendChild(errorTable)
