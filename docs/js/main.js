@@ -102,23 +102,23 @@ class FileValidator {
 
         const validate = ajv.compile(this.schema)
         validate(sheetData)
-        this.render(validate)
+        this.render(validate, sheetData)
     }
 
-    render(result) {
+    render(result, sheetData) {
         const resultHeader = document.createElement('h3')
 
         if ( result.errors?.length > 0 ) {
             resultHeader.innerText = 'Upload contains errors'
             outputDiv.appendChild(resultHeader)
-            this.renderErrors(result.errors, resultHeader)
+            this.renderErrors(result.errors, resultHeader, sheetData)
         } else {
             resultHeader.innerText = 'Upload is valid!'
             outputDiv.appendChild(resultHeader)
         }
     }
 
-    renderErrors(errors, resultHeader) {
+    renderErrors(errors, resultHeader, sheetData) {
         const errorTable = document.createElement('table')
         errorTable.className = 'table table-striped'
         errorTable.innerHTML = `
@@ -127,6 +127,7 @@ class FileValidator {
                     <th>Line number</th>
                     <th>Column</th>
                     <th>Error</th>
+                    <th>Input Value</th>
                 </tr>
             </thead>
             <tbody id="errors"></tbody>
@@ -151,6 +152,7 @@ class FileValidator {
             const column = lineAndColumn[2] ? lineAndColumn[2] : additionalInfo
             const allowedValues = error.params.allowedValues 
                                     ? `: <br>${error.params.allowedValues.join(', ')}` : ''
+            const inputValue = sheetData[lineAndColumn[1]][column]
 
             errorTableBody.insertAdjacentHTML(
                 'beforeend',
@@ -158,13 +160,15 @@ class FileValidator {
                     <td>${lineNumber}</td>
                     <td>${column}</td>
                     <td>${error.message}${allowedValues}</td>
+                    <td>${inputValue ? inputValue : ''}</td>
                 </tr>`
             )
 
             errorData.push({
                 'line_number': lineNumber,
                 'column': column,
-                'message': error.message})
+                'message': error.message,
+                'input': inputValue ? inputValue : ''})
         })
 
         outputDiv.appendChild(errorTable)
